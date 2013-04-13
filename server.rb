@@ -2,23 +2,11 @@ require 'sinatra'
 require 'haml'
 require 'json'
 
+
 helpers do
 
   def get_metrics()
-    if @METRICS == nil then
-      @METRICS = []      
-      header = nil
-      File.readlines('metrics.csv').each do |line|
-        elements = line.split(/\t/).map { |e| e.chomp }
-        if header == nil then
-          header = elements
-        else
-          elements = elements.map.with_index { |e, i| i <= 5 ? e.to_i : e}
-          @METRICS << Hash[header.zip(elements)]
-        end  
-      end
-    end
-    @METRICS
+    @METRICS ||= JSON.parse(File.read("data/data.json"))
   end
 
 end
@@ -44,14 +32,6 @@ end
 
 __END__
 
-@@ cctray
-!!! XML
-%Projects
-  %Project{:name => 'connectfour', :webUrl => 'http://localhost:4567/dashboard/build/detail/connectfour',
-    :activity => @@ACTIVITY, :lastBuildStatus => @@STATUS,
-    :lastBuildLabel => "build.#{@@BUILD_NUM}", :lastBuildTime => @@BUILD_TIME}
-
-
 @@ overview
 !!! 5
 %html
@@ -62,4 +42,3 @@ __END__
     %script{:type => "text/javascript", :src  => "draw.js"}
   %h1 Class Polymetric View
   %p Showing metrics for #{get_metrics.count} classes.
-  %div
