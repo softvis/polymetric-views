@@ -36,6 +36,7 @@ __END__
 !!! 5
 %html
   %head
+    %link(rel="stylesheet" type="text/css" href="style.css")
     %script{:type => "text/javascript", :src  => "jquery-1.9.1.min.js"}
     %script{:type => "text/javascript", :src  => "d3.v3.min.js"}
     %script{:type => "text/javascript", :src  => "data.js"}
