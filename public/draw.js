@@ -8,10 +8,10 @@ $( document ).ready(function() {
     .attr("x-foo", d3.max(data, function(d) { return d.LOC }))
   var x = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d.LOC })])
-    .range([0, 500]);
+    .range([0, 1000]);
   var f = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d.WMC })])
-    .range([0, 100]);
+    .range([100, 0]);
   chart.selectAll("line")
     .data(x.ticks(10))
     .enter().append("line")
@@ -21,10 +21,10 @@ $( document ).ready(function() {
     .attr("y2", bheight * data.length)
     .style("stroke", "#ccc");
   chart.selectAll("rect")
-    .data(data.map(function(d) { return d.LOC }))
+    .data(data)
     .enter().append("rect")
     .attr("y", function(d, i) { return i * bheight; })
-    .attr("width", x)
+    .attr("width", function(d) { return x(d.LOC) })
     .attr("height", bheight - 2)
-    .style("fill", "hsl(200, " + 10 + "%, 50%)");
+    .style("fill", function(d) { return "hsl(200, 80%, " + f(d.WMC) + "%)" });
  });
