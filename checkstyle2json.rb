@@ -49,8 +49,8 @@ class Metrics
       "CDAC" => @cdac,
       "CFOC" => @cfoc,
       "MCOUNT" => @mcount,
-      "WMCloc" => @wmc_loc,
-      "WMCcc" => @wmc_cc,
+      "LOC" => @wmc_loc,
+      "WMC" => @wmc_cc,
       "istest" => @name.index('test/') != nil ? 'test' : 'main',
       "name" => @name.chomp(".java")
     }
