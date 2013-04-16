@@ -12,11 +12,11 @@ helpers do
 end
 
 get '/' do
-  redirect "/overview"
+  redirect "/sizehistogram"
 end
 
-get '/overview' do
-  haml :overview
+get '/sizehistogram' do
+  haml :sizehistogram
 end
 
 get '/data' do
@@ -32,7 +32,7 @@ end
 
 __END__
 
-@@ overview
+@@ sizehistogram
 !!! 5
 %html
   %head
@@ -40,6 +40,7 @@ __END__
     %script{:type => "text/javascript", :src  => "jquery-1.9.1.min.js"}
     %script{:type => "text/javascript", :src  => "d3.v3.min.js"}
     %script{:type => "text/javascript", :src  => "data.js"}
-    %script{:type => "text/javascript", :src  => "draw.js"}
+    %script{:type => "text/javascript", :src  => "draw-sizehistogram.js"}
   %h1 Class Polymetric View
-  %p Showing metrics for #{get_metrics.count} classes.
+  %p Showing histogram for #{get_metrics.count} classes.
+  %p Order: FLENGTH, width: LOC, shading: WMC.
