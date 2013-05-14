@@ -1,3 +1,7 @@
+p {
+	font-family: sans-serif;
+}
+
 .chart rect {
   stroke: black;
   fill: pink;
