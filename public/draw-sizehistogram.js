@@ -1,30 +1,37 @@
 $( document ).ready(function() {
-  data.sort(function(a, b) { return b.FLENGTH - a.FLENGTH} )
-  var bheight = 10
+
+  data.sort(function(da, db) { return db.FLENGTH - da.FLENGTH} )
+
+  var BHEIGHT = 10
+
   var chart = d3.select("body").append("svg")
     .attr("class", "chart")
     .attr("width", 1000)
-    .attr("height", bheight * data.length)
-    .attr("x-foo", d3.max(data, function(d) { return d.LOC }))
-  var x = d3.scale.linear()
+    .attr("height", BHEIGHT * data.length)
+
+  var xscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d.LOC })])
     .range([0, 1000]);
-  var f = d3.scale.linear()
+
+  var fscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d.WMC })])
     .range([100, 0]);
+
   chart.selectAll("line")
-    .data(x.ticks(10))
+    .data(xscale.ticks(10))
     .enter().append("line")
-    .attr("x1", x)
-    .attr("x2", x)
+    .attr("x1", xscale)
+    .attr("x2", xscale)
     .attr("y1", 0)
-    .attr("y2", bheight * data.length)
+    .attr("y2", BHEIGHT * data.length)
     .style("stroke", "#ccc");
+
   chart.selectAll("rect")
     .data(data)
     .enter().append("rect")
-    .attr("y", function(d, i) { return i * bheight; })
-    .attr("width", function(d) { return x(d.LOC) })
-    .attr("height", bheight - 2)
-    .style("fill", function(d) { return "hsl(200, 80%, " + f(d.WMC) + "%)" });
- });
+    .attr("y", function(d, i) { return i * BHEIGHT; })
+    .attr("width", function(d) { return xscale(d.LOC) })
+    .attr("height", BHEIGHT - 2)
+    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d.WMC) + "%)" });
+
+});
