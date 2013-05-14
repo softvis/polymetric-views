@@ -4,15 +4,30 @@ p {
 
 .chart rect {
   stroke: black;
-  fill: pink;
 }
 
 div.tooltip {   
   position: absolute;           
-  text-align: center;           
+  text-align: left;           
   padding: 4px;             
   font: 12px sans-serif;        
   background: #EEE;   
   border: 1px solid #333;      
+  border-radius: 2px;           
   pointer-events: none;         
+}
+
+.tooltip h2 {
+	font-family: sans-serif;
+	font-size: 130%;
+	margin: 0 0 0 0;
+}
+
+.tooltip p.filename {
+	font-size: 90%;
+	margin: 0;
+}
+
+.tooltip p:last-child {
+	margin-bottom: 0;
 }
