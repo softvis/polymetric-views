@@ -44,7 +44,8 @@ class Metrics
       "LOC" => @wmc_loc,
       "WMC" => @wmc_cc,
       "istest" => @name.index('test/') != nil ? 'test' : 'main',
-      "name" => @name.chomp(".java")
+      "path" => @name,
+      "name" => @name.split("/").last().chomp(".java")
     }
   end
   
