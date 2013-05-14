@@ -1,5 +1,7 @@
 require 'nokogiri'
 require 'json'
+require 'optparse'
+              
               
 class Metrics
       
@@ -33,15 +35,6 @@ class Metrics
 	  message.split(/ /)[pos].sub(/,/, "").to_i
   end
 
-  def sizebucket()
-    size_bucket = 0
-    [50, 100, 200, 500, 1000, 2000].each do |i|
-      size_bucket = i
-      break if i > @wmc_loc
-    end
-    sizebucket
-  end
-
   def to_hash    
     { 
       "FLENGTH" => @flength,
@@ -57,26 +50,46 @@ class Metrics
   
 end
 
+
 class Processor
 
-  def initialize(infile, prefix, outfile)
-    @doc = Nokogiri::XML(File.new(infile))
-    @prefix = prefix
-    @outfile = outfile
+  def initialize(argv)
+    parser = OptionParser.new do |opt|
+      opt.banner = "Usage: #{$0} [OPTIONS] inputfile"
+      @outfile = $stdout
+      opt.on("-o", "--outfile FILENAME", "file to write the output to") do |outfile|
+        @outfile = File.open(outfile, 'w')
+      end
+      @basedir = ""
+      opt.on("-b", "--basedir PATH", "base directory to be removed from paths") do |basedir|
+        @basedir = basedir
+      end
+      @compact = false
+      opt.on("-c", "--compact", "create compact (one-line) output") do |basedir|
+        @compact = true
+      end
+      opt.on("-h", "--help", "help") do 
+        puts parser
+        exit
+      end
+    end
+    parser.parse!(argv)
+    @doc = Nokogiri::XML((argv.length > 0) ? File.new(argv[0]) : $stdin)
   end
 
   def run
     all_metrics = []
     @doc.xpath("//file").each do |filenode|    
-      metrics = Metrics.new(filenode["name"].sub(@prefix, ""))
+      metrics = Metrics.new(filenode["name"].sub(@basedir, ""))
       filenode.xpath(".//error").each do |errnode| 
         metrics.add(errnode["source"], errnode["message"])
       end  
       all_metrics << metrics.to_hash
     end
-    File.open(@outfile, 'w') { |f| f.write("#{all_metrics.to_json}") }
+    output = @compact ? all_metrics.to_json : JSON.pretty_generate(all_metrics)
+    @outfile.write("#{output}")
   end
   
 end
 
-Processor.new("data/checkstyle_out.xml", "trunk", "data/data.json").run
+Processor.new(ARGV).run
