@@ -5,6 +5,10 @@ $( document ).ready(function() {
 	var CHEIGHT = 600
   var BWIDTH = 12
 
+	var div = d3.select("body").append("div")   
+	    .attr("class", "tooltip")               
+	    .style("opacity", 0);
+			
   var chart = d3.select("body").append("svg")
     .attr("class", "chart")
     .attr("width", BWIDTH * data.length)
@@ -34,6 +38,18 @@ $( document ).ready(function() {
 		.attr("y", function(d) { return CHEIGHT - yscale(d.LOC) })
     .attr("height", function(d) { return yscale(d.LOC) })
     .attr("width", BWIDTH - 3)
-    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d.WMC) + "%)" });
-
+    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d.WMC) + "%)" })
+		.on("mouseover", function(d) {      
+				div.transition()        
+           .duration(200)      
+           .style("opacity", 1);      
+        div.html(d.name)  
+           .style("left", (d3.event.pageX) + "px")     
+           .style("top", (d3.event.pageY - 28) + "px");    
+         })
+    .on("mouseout", function(d) {       
+		 		div.transition()        
+		       .duration(500)      
+		       .style("opacity", 0)
+				});  
 });

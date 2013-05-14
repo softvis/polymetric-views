@@ -6,3 +6,13 @@ p {
   stroke: black;
   fill: pink;
 }
+
+div.tooltip {   
+  position: absolute;           
+  text-align: center;           
+  padding: 4px;             
+  font: 12px sans-serif;        
+  background: #EEE;   
+  border: 1px solid #333;      
+  pointer-events: none;         
+}
