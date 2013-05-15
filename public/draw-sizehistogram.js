@@ -3,7 +3,9 @@ $( document ).ready(function() {
   data.sort(function(da, db) { return db.FLENGTH - da.FLENGTH} )
 
 	var CHEIGHT = 600
-  var BWIDTH = 12
+  var BWIDTH = 8
+	var BGAP = 2;
+	var BMINHEIGHT = 5
 
 	var div = d3.select("body").append("div")   
 	    .attr("class", "tooltip")               
@@ -11,15 +13,9 @@ $( document ).ready(function() {
 			
   var chart = d3.select("body").append("svg")
     .attr("class", "chart")
-    .attr("width", BWIDTH * data.length)
-    .attr("height", CHEIGHT);
+    .attr("width", (BWIDTH + BGAP) * data.length)
+    .attr("height", CHEIGHT + 1);
 		
-	var tooltip = function(d) {
-		path = d.path.split("/").slice(0, -1).join("/");
-		return "<h2>" + d.name + "</h2><p class='filename'>" + path + 
-			"<p>FLENGTH: " + d.FLENGTH + "<br>LOC: " + d.LOC + "<br>WMC: " + d.WMC;
-	}
-
   var yscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d.LOC })])
     .range([0, CHEIGHT]);
@@ -32,7 +28,7 @@ $( document ).ready(function() {
     .data(yscale.ticks(10))
     .enter().append("line")
     .attr("x1", 0)
-    .attr("x2", BWIDTH * data.length)
+    .attr("x2", (BWIDTH + BGAP) * data.length)
     .attr("y1", function(d) { return CHEIGHT - yscale(d) })
     .attr("y2", function(d) { return CHEIGHT - yscale(d) })
     .style("stroke", "#ccc");
@@ -40,10 +36,10 @@ $( document ).ready(function() {
   chart.selectAll("rect")
     .data(data)
     .enter().append("rect")
-    .attr("x", function(d, i) { return i * BWIDTH; })
+    .attr("x", function(d, i) { return i * (BWIDTH + BGAP); })
 		.attr("y", function(d) { return CHEIGHT - yscale(d.LOC) })
-    .attr("height", function(d) { return yscale(d.LOC) })
-    .attr("width", BWIDTH - 3)
+    .attr("height", function(d) { return Math.max(BMINHEIGHT, yscale(d.LOC)) })
+    .attr("width", BWIDTH)
     .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d.WMC) + "%)" })
 		.on("mouseover", function(d) {      
 				div.transition()        
