@@ -11,11 +11,11 @@ helpers do
 end
 
 get '/' do
-  redirect "/sizehistogram"
+  redirect "/histogram"
 end
 
-get '/sizehistogram' do
-  haml :sizehistogram
+get '/histogram' do
+  haml :histogram
 end
 
 get '/hotspotdiagram' do

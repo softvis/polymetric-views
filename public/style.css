@@ -1,5 +1,18 @@
-p {
+body {
 	font-family: sans-serif;
+}
+
+.formlabel {
+	vertical-align: baseline;
+}
+
+select, input {
+	font-size: 1.1em;
+	margin-right: 0.75em;
+}
+
+form {
+	margin-bottom: 1em;
 }
 
 .chart rect {

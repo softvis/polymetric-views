@@ -1,0 +1,20 @@
+
+%h1 Class Polymetric View
+
+%p Showing histogram for #{get_metrics.count} classes.
+
+%form{:action => "#"}
+	%span.formlabel x-pos: 
+	%select#sel-xpos{:name => 'xpos', :onclick => "redraw()"}
+		- ['FLENGTH', 'LOC', 'WMC'].each do |i|
+			%option{:value => i, :selected => (i == 'FLENGTH')}= i
+	%span.formlabel height: 
+	%select#sel-height{:name => 'height', :onclick => "redraw()"}
+		- ['FLENGTH', 'LOC', 'WMC'].each do |i|
+			%option{:value => i, :selected => (i == 'LOC')}= i
+	%span.formlabel shading: 
+	%select#sel-shading{:name => 'shading', :onclick => "redraw()"}
+		- ['FLENGTH', 'LOC', 'WMC'].each do |i|
+			%option{:value => i, :selected => (i == 'WMC')}= i
+
+%script{:type => "text/javascript", :src  => "draw-histogram.js"}
