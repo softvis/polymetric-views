@@ -1,16 +1,15 @@
 var redraw = function() {
-	var at = {
-		SORT: $('#sel-xpos').find(":selected").text(),
-		HEIGHT: $('#sel-height').find(":selected").text(),
-		SHADE: $('#sel-shading').find(":selected").text(),
-	}
-
+	
 	var CHEIGHT = 600;
 	var BWIDTH = 8;
 	var BGAP = 2;
 	var LEFTSPACE = 40;
 
-	$('#sel-shading').find(":selected").text()
+	var at = {
+		SORT: $('#sel-xpos').find(":selected").text(),
+		HEIGHT: $('#sel-height').find(":selected").text(),
+		SHADE: $('#sel-shading').find(":selected").text(),
+	}
 
 	data.shuffle().sort(function(da, db) { return db[at.SORT] - da[at.SORT]} )
 
@@ -61,6 +60,5 @@ var redraw = function() {
 		.attr("transform", "translate(" + LEFTSPACE + ", 0)")
 		.call(yaxis);
 }
-
 
 $(document).ready(redraw());
