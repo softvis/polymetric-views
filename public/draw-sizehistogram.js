@@ -9,14 +9,10 @@ $( document ).ready(function() {
 	var CHEIGHT = 600;
   var BWIDTH = 8;
 	var BGAP = 2;
-	var LEFTSPACE = 50;
+	var LEFTSPACE = 40;
 
   data.sort(function(da, db) { return db[at.SORT] - da[at.SORT]} )
 
-	var div = d3.select("body").append("div")   
-	    .attr("class", "tooltip")               
-	    .style("opacity", 0);
-			
   var chart = d3.select("body").append("svg")
     .attr("class", "chart")
     .attr("width", (BWIDTH + BGAP) * data.length)
@@ -44,8 +40,8 @@ $( document ).ready(function() {
     .enter().append("line")
     .attr("x1", function(td) { return xscale(0) })
     .attr("x2", function(td) { return xscale(data.length) })
-    .attr("y1", function(td) { return yscale(td) })
-    .attr("y2", function(td) { return yscale(td) })
+    .attr("y1", yscale)
+    .attr("y2", yscale)
     .style("stroke", "#ccc");
 
   chart.selectAll("rect")
@@ -56,19 +52,7 @@ $( document ).ready(function() {
     .attr("height", function(d) { return CHEIGHT -yscale(d[at.HEIGHT]) })
     .attr("width", BWIDTH)
     .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d[at.SHADE]) + "%)" })
-		.on("mouseover", function(d) {      
-				div.transition()        
-           .duration(200)      
-           .style("opacity", 1);      
-        div.html(tooltip(d))  
-           .style("left", (d3.event.pageX) + "px")     
-           .style("top", (d3.event.pageY - 28) + "px");    
-         })
-    .on("mouseout", function(d) {       
-		 		div.transition()        
-		       .duration(500)      
-		       .style("opacity", 0)
-				});  
+		.call(tooltip());
 				
 	chart.append("g")
   	.attr("class", "axis")

@@ -40,10 +40,11 @@ div.tooltip {
 
 .tooltip p.filename {
 	font-size: 90%;
-	margin: 0;
+	margin: 0 0 0.5em 0;
+	border-bottom: 1px solid #BBB;
 }
 
-.tooltip p:last-child {
-	margin-bottom: 0;
+.tooltip p {
+	margin: 0;
 }
 
