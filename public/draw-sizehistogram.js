@@ -9,7 +9,7 @@ $( document ).ready(function() {
 	var CHEIGHT = 600;
   var BWIDTH = 8;
 	var BGAP = 2;
-	var BMINHEIGHT = 5;
+	var LEFTSPACE = 50;
 
   data.sort(function(da, db) { return db[at.SORT] - da[at.SORT]} )
 
@@ -20,31 +20,40 @@ $( document ).ready(function() {
   var chart = d3.select("body").append("svg")
     .attr("class", "chart")
     .attr("width", (BWIDTH + BGAP) * data.length)
-    .attr("height", CHEIGHT + 1);
+    .attr("height", CHEIGHT + 5); /* to accomodate bottom label */
+		
+	var xscale = d3.scale.linear()
+		.domain([0, data.length])
+		.range([LEFTSPACE, (BWIDTH + BGAP) * data.length + LEFTSPACE])
 		
   var yscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d[at.HEIGHT] })])
-    .range([0, CHEIGHT]);
+    .range([CHEIGHT-1, 0]);
 
   var fscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return d[at.SHADE] })])
     .range([100, 0]);
 
+	var yaxis = d3.svg.axis()
+		.scale(yscale)
+		.orient("left")
+		.ticks(10);
+		
   chart.selectAll("line")
     .data(yscale.ticks(10))
     .enter().append("line")
-    .attr("x1", 0)
-    .attr("x2", (BWIDTH + BGAP) * data.length)
-    .attr("y1", function(td) { return CHEIGHT - yscale(td) })
-    .attr("y2", function(td) { return CHEIGHT - yscale(td) })
+    .attr("x1", function(td) { return xscale(0) })
+    .attr("x2", function(td) { return xscale(data.length) })
+    .attr("y1", function(td) { return yscale(td) })
+    .attr("y2", function(td) { return yscale(td) })
     .style("stroke", "#ccc");
 
   chart.selectAll("rect")
     .data(data)
     .enter().append("rect")
-    .attr("x", function(d, i) { return i * (BWIDTH + BGAP); })
-		.attr("y", function(d) { return CHEIGHT - Math.max(BMINHEIGHT, yscale(d[at.HEIGHT])) })
-    .attr("height", function(d) { return Math.max(BMINHEIGHT, yscale(d[at.HEIGHT])) })
+    .attr("x", function(d, i) { return xscale(i) })
+		.attr("y", function(d) { return yscale(d[at.HEIGHT]) })
+    .attr("height", function(d) { return CHEIGHT -yscale(d[at.HEIGHT]) })
     .attr("width", BWIDTH)
     .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d[at.SHADE]) + "%)" })
 		.on("mouseover", function(d) {      
@@ -60,4 +69,10 @@ $( document ).ready(function() {
 		       .duration(500)      
 		       .style("opacity", 0)
 				});  
+				
+	chart.append("g")
+  	.attr("class", "axis")
+		.attr("transform", "translate(" + LEFTSPACE + ", 0)")
+		.call(yaxis);
+				
 });

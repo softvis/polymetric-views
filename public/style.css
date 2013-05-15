@@ -6,6 +6,21 @@ p {
   stroke: black;
 }
 
+.axis path {
+	opacity: 0;	
+}
+
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
 div.tooltip {   
   position: absolute;           
   text-align: left;           
@@ -31,3 +46,4 @@ div.tooltip {
 .tooltip p:last-child {
 	margin-bottom: 0;
 }
+
