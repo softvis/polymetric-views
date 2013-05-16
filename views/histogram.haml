@@ -1,7 +1,6 @@
 
-%p Showing histogram for #{get_metrics.count} classes.
-
 %form{:action => "#"}
+	Showing histogram for #{get_metrics.count} classes.
 	%span.formlabel x-pos: 
 	%select#sel-xpos{:name => 'xpos', :onclick => "redraw()"}
 		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|

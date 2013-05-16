@@ -1,18 +1,25 @@
 body {
 	font-family: sans-serif;
+	color: #333;
+}
+
+h1 {
+	margin: 0.3em 0;
 }
 
 .formlabel {
 	vertical-align: baseline;
+	border-left: 2px solid #CCC;
+	margin: 0 0.1em 0 0.4em;
+	padding-left: 0.5em;
 }
 
 select, input {
 	font-size: 1.1em;
-	margin-right: 0.75em;
 }
 
 form {
-	margin-bottom: 1em;
+	margin-bottom: 2em;
 }
 
 .chart rect {
