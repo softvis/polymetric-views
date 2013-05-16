@@ -4,15 +4,15 @@
 %form{:action => "#"}
 	%span.formlabel x-pos: 
 	%select#sel-xpos{:name => 'xpos', :onclick => "redraw()"}
-		- ['FLENGTH', 'LOC', 'WMC'].each do |i|
+		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
 			%option{:value => i, :selected => (i == 'WMC')}= i
 	%span.formlabel height: 
 	%select#sel-height{:name => 'height', :onclick => "redraw()"}
-		- ['FLENGTH', 'LOC', 'WMC'].each do |i|
+		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
 			%option{:value => i, :selected => (i == 'LOC')}= i
 	%span.formlabel shading: 
 	%select#sel-shading{:name => 'shading', :onclick => "redraw()"}
-		- ['FLENGTH', 'LOC', 'WMC'].each do |i|
+		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
 			%option{:value => i, :selected => (i == 'FLENGTH')}= i
 
 %script{:type => "text/javascript", :src  => "histogram.js"}
