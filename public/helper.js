@@ -8,8 +8,6 @@ var tooltip = function() {
 				if (div.empty()) {
 				 	div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 				}
-			  div.style("left", (d3.event.pageX - 20) + "px")     
-	  		   .style("top", (d3.event.pageY + 20) + "px");
 			  div.html("");
 				div.append("h2").text(d.name);
 				div.append("p").attr("class", "filename").text(d.path.split("/").slice(0, -1).join("/"));
@@ -18,6 +16,14 @@ var tooltip = function() {
 						div.append("p").text(p + ": " + d[p]);
 				  }
 				}
+				var ttx = d3.event.pageX;
+				var tty = d3.event.pageY - $("div.tooltip").height() - 15;
+				var hclip = (ttx + $("div.tooltip").width()) - ($(window).width() + $(window).scrollLeft())
+				if (hclip > 0) {
+					ttx -= hclip
+				}
+				div.style("left", (ttx - 20) + "px")     
+	  		   .style("top", tty + "px");
  				div.transition().duration(100).style("opacity", 0.9);
 			})
 			.on("mouseout", function(d) {       
