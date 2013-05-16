@@ -24,7 +24,7 @@ var tooltip = function() {
 				}
 				div.style("left", (ttx - 20) + "px")     
 	  		   .style("top", tty + "px");
- 				div.transition().duration(100).style("opacity", 0.9);
+ 				div.transition().duration(100).style("opacity", 0.95);
 			})
 			.on("mouseout", function(d) {       
 				div = d3.select("body").select("div.tooltip")

@@ -1,5 +1,17 @@
 
-%p Showing hotspot diagram for #{get_metrics.count} classes.
-%p Order: MCOUNT, width: MCOUNT, height: MCOUNT, shading: LOC.
+%form{:action => "#"}
+	Showing hotspot diagram for #{get_metrics.count} classes.
+	%span.formlabel order: 
+	%select#sel-order{:name => 'order', :onclick => "redraw()"}
+		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
+			%option{:value => i, :selected => (i == 'MCOUNT')}= i
+	%span.formlabel width/height: 
+	%select#sel-width{:name => 'width', :onclick => "redraw()"}
+		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
+			%option{:value => i, :selected => (i == 'MCOUNT')}= i
+	%span.formlabel shading: 
+	%select#sel-shading{:name => 'shading', :onclick => "redraw()"}
+		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
+			%option{:value => i, :selected => (i == 'LOC')}= i
 
 %script{:type => "text/javascript", :src  => "hotspotdiagram.js"}

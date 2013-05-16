@@ -11,7 +11,7 @@ helpers do
 end
 
 get '/' do
-  redirect "/histogram"
+  haml :index
 end
 
 get '/histogram' do

@@ -1,16 +1,30 @@
-$( document ).ready(function() {
-  data.sort(function(a, b) { return a.MCOUNT - b.MCOUNT} )
-  var chart = d3.select("body").append("svg")
+var redraw = function() {
+
+	var CWIDTH = 800;
+
+	var at = {
+		SORT: $('#sel-order').find(":selected").text(),
+		WIDTH: $('#sel-width').find(":selected").text(),
+		HEIGHT: $('#sel-height').find(":selected").text(),
+		SHADE: $('#sel-shading').find(":selected").text(),
+	}
+
+	data.shuffle().sort(function(da, db) { return da[at.SORT] - db[at.SORT]} )
+  
+	d3.selectAll("svg").remove();
+	var chart = d3.select("body").append("svg")
     .attr("class", "chart")
-    .attr("width", 1000)
+    .attr("width", CWIDTH)
     .attr("height", 5000);
-  var x = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return d.MCOUNT })])
+
+  var wscale = d3.scale.linear()
+    .domain([0, d3.max(data, function(d) { return d[at.WIDTH] })])
     .range([5, 50]);
-  var f = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return d.LOC })])
+  
+	var fscale = d3.scale.linear()
+    .domain([0, d3.max(data, function(d) { return d[at.SHADE] })])
     .range([100, 0]);
-  var size = function(x) { return Math.max(x, 5)};
+
   var xp = 2;
   var xp2 = 2
   var yp = 0;
@@ -18,23 +32,26 @@ $( document ).ready(function() {
     .data(data)
     .enter().append("rect")
     .attr("x", function(d, i) { 
-      var w = size(x(d.MCOUNT))
+      var w = wscale(d[at.WIDTH])
       xp += w + 2; 
-      if (i % 20 == 0) {
+      if (i % 40 == 0) {
         xp = w + 4; 
       }
       return xp - (w + 2)
     })
     .attr("y", function(d, i) { 
-      var w = size(x(d.MCOUNT))
+      var w = wscale(d[at.WIDTH])
       xp2 += w + 2; 
-      if (i % 20 == 0) {
+      if (i % 40 == 0) {
         xp2 = w + 4; 
         yp += w + 2;
       }
       return yp
     })
-    .attr("width", function(d) { return size(x(d.MCOUNT)) })
-    .attr("height", function(d) { return size(x(d.MCOUNT)) })
-    .style("fill", function(d) { return "hsl(200, 80%, " + f(d.LOC) + "%)" });
- });
+    .attr("width", function(d) { return wscale(d[at.WIDTH]) })
+    .attr("height", function(d) { return wscale(d[at.WIDTH]) })
+    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d[at.SHADE]) + "%)" })
+		.call(tooltip());
+ }
+
+ $(document).ready(redraw());
