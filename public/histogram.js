@@ -1,17 +1,14 @@
-var redraw = function() {
+
+histogram = {}
+
+histogram.draw = function(at) {
 	
 	var CHEIGHT = 600;
 	var BWIDTH = 8;
 	var BGAP = 2;
 	var LEFTSPACE = 40;
 
-	var at = {
-		SORT: $('#sel-xpos').find(":selected").text(),
-		HEIGHT: $('#sel-height').find(":selected").text(),
-		SHADE: $('#sel-shading').find(":selected").text(),
-	}
-
-	data.shuffle().sort(function(da, db) { return db[at.SORT] - da[at.SORT]} )
+	data.shuffle().sort(function(da, db) { return db[at.sort] - da[at.sort]} )
 
 	d3.selectAll("svg").remove();
 	var chart = d3.select("body").append("svg")
@@ -24,11 +21,11 @@ var redraw = function() {
 		.rangeRound([LEFTSPACE, (BWIDTH + BGAP) * data.length + LEFTSPACE])
 		
 	var yscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return d[at.HEIGHT] })])
+		.domain([0, d3.max(data, function(d) { return d[at.height] })])
 		.rangeRound([CHEIGHT-1, 0]);
 
 	var fscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return d[at.SHADE] })])
+		.domain([0, d3.max(data, function(d) { return d[at.shade] })])
 		.range([100, 0]);
 
 	var yaxis = d3.svg.axis()
@@ -49,11 +46,11 @@ var redraw = function() {
 		.data(data)
 		.enter().append("rect")
 		.attr("x", function(d, i) { return xscale(i) })
-		.attr("y", function(d) { return yscale(d[at.HEIGHT]) })
-		.attr("height", function(d) { return CHEIGHT -yscale(d[at.HEIGHT]) })
+		.attr("y", function(d) { return yscale(d[at.height]) })
+		.attr("height", function(d) { return CHEIGHT -yscale(d[at.height]) })
 		.attr("width", BWIDTH)
 		.attr("shape-rendering", "crispEdges")
-		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(d[at.SHADE]) + "%)" })
+		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(d[at.shade]) + "%)" })
 		.call(tooltip());
 				
 	chart.append("g")
@@ -61,5 +58,3 @@ var redraw = function() {
 		.attr("transform", "translate(" + LEFTSPACE + ", 0)")
 		.call(yaxis);
 }
-
-$(document).ready(redraw());

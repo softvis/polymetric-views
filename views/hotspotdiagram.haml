@@ -15,3 +15,14 @@
 			%option{:value => i, :selected => (i == 'LOC')}= i
 
 %script{:type => "text/javascript", :src  => "hotspotdiagram.js"}
+
+:javascript
+	redraw = function() {
+		hotspot.draw({
+			sort: $('#sel-order').find(":selected").text(),
+			width: $('#sel-width').find(":selected").text(),
+			shade: $('#sel-shading').find(":selected").text(),
+		})
+	}
+	$(document).ready(redraw());
+	

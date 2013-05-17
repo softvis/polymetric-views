@@ -1,8 +1,8 @@
 
 %form{:action => "#"}
 	Showing histogram for #{get_metrics.count} classes.
-	%span.formlabel x-pos: 
-	%select#sel-xpos{:name => 'xpos', :onclick => "redraw()"}
+	%span.formlabel order: 
+	%select#sel-order{:name => 'order', :onclick => "redraw()"}
 		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
 			%option{:value => i, :selected => (i == 'WMC')}= i
 	%span.formlabel height: 
@@ -15,3 +15,14 @@
 			%option{:value => i, :selected => (i == 'FLENGTH')}= i
 
 %script{:type => "text/javascript", :src  => "histogram.js"}
+
+:javascript
+	redraw = function() {
+		histogram.draw({
+			sort: $('#sel-order').find(":selected").text(),
+			height: $('#sel-height').find(":selected").text(),
+			shade: $('#sel-shading').find(":selected").text(),
+		})
+	}
+	$(document).ready(redraw());
+	

@@ -40,29 +40,22 @@ var quadratic = function () {
 }
 
 
-var redraw = function() {
+hotspot = {}
 
-	var CWIDTH = 800;
+hotspot.draw = function(at) {
 
-	var at = {
-		SORT: $('#sel-order').find(":selected").text(),
-		WIDTH: $('#sel-width').find(":selected").text(),
-		HEIGHT: $('#sel-height').find(":selected").text(),
-		SHADE: $('#sel-shading').find(":selected").text(),
-	}
-
-	data.shuffle().sort(function(da, db) { return da[at.SORT] - db[at.SORT]} )
+	data.shuffle().sort(function(da, db) { return da[at.sort] - db[at.sort]} )
   
   var wscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return d[at.WIDTH] })])
-    .rangeRound([5, 50]);
+    .domain([0, d3.max(data, function(d) { return d[at.width] })])
+    .rangeRound([4, 40]);
   
 	var fscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return d[at.SHADE] })])
+    .domain([0, d3.max(data, function(d) { return d[at.shade] })])
     .range([100, 0]);
 
 	var layout = quadratic()
-		.size(function(d) { return wscale(d[at.WIDTH]) });
+		.size(function(d) { return wscale(d[at.width]) });
 		 
 	var items = layout(data);
 	
@@ -77,11 +70,10 @@ var redraw = function() {
     .enter().append("rect")
     .attr("x", function(d) { return d.x })
     .attr("y", function(d) { return d.y })
-    .attr("width", function(d) { return wscale(d.item[at.WIDTH]) })
-    .attr("height", function(d) { return wscale(d.item[at.WIDTH]) })
+    .attr("width", function(d) { return wscale(d.item[at.width]) })
+    .attr("height", function(d) { return wscale(d.item[at.width]) })
 		.attr("shape-rendering", "crispEdges")
-    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d.item[at.SHADE]) + "%)" })
+    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d.item[at.shade]) + "%)" })
 		.call(tooltip(function(d) { return d.item }));
- }
+}
 
- $(document).ready(redraw());
