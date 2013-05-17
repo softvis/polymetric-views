@@ -1,9 +1,14 @@
 
-var tooltip = function() {
+var tooltip = function(a) {
+	
+	var accessor = arguments.length ? a : undefined;
 	
 	function tooltip(selection) {
 		selection
 			.on("mouseover", function(d) {
+				if(accessor) {
+					d = accessor(d);
+				}
 			 	var div = d3.select("body").selectAll("div.tooltip");
 				if (div.empty()) {
 				 	div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
