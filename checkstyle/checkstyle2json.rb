@@ -34,6 +34,10 @@ class Metrics
   def getval(message, pos)
 	  message.split(/ /)[pos].sub(/,/, "").to_i
   end
+  
+  def is_test
+    @name.index('test/') != nil
+  end
 
   def to_hash    
     { 
@@ -43,7 +47,7 @@ class Metrics
       "MCOUNT" => @mcount,
       "LOC" => @wmc_loc,
       "WMC" => @wmc_cc,
-      "istest" => @name.index('test/') != nil ? 'test' : 'main',
+      "istest" => is_test() ? 'test' : 'main',
       "path" => @name,
       "name" => @name.split("/").last().chomp(".java")
     }
@@ -69,6 +73,10 @@ class Processor
       opt.on("-c", "--compact", "create compact (one-line) output") do |basedir|
         @compact = true
       end
+      @tests = false
+      opt.on("-t", "--tests", "include test classes") do |basedir|
+        @compact = true
+      end
       opt.on("-h", "--help", "help") do 
         puts parser
         exit
@@ -84,8 +92,8 @@ class Processor
       metrics = Metrics.new(filenode["name"].sub(@basedir, ""))
       filenode.xpath(".//error").each do |errnode| 
         metrics.add(errnode["source"], errnode["message"])
-      end  
-      all_metrics << metrics.to_hash
+      end
+      all_metrics << metrics.to_hash unless metrics.is_test && !@tests
     end
     output = @compact ? all_metrics.to_json : JSON.pretty_generate(all_metrics)
     @outfile.write("#{output}")
