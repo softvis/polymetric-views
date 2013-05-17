@@ -8,7 +8,7 @@ barchart.draw = function(at) {
 	var BGAP = 2;
 	var LEFTSPACE = 40;
 
-	data.shuffle().sort(function(da, db) { return db[at.sort] - da[at.sort]} )
+	data.sort(function(da, db) { return db[at.sort] - da[at.sort]} )
 
 	d3.selectAll("svg").remove();
 	var chart = d3.select("body").append("svg")
