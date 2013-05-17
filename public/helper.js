@@ -27,8 +27,8 @@ var tooltip = function(a) {
 				if (hclip > 0) {
 					ttx -= hclip
 				}
-				div.style("left", (ttx - 20) + "px")     
-	  		   .style("top", tty + "px");
+				div.style("left", Math.max(ttx - 20, $(window).scrollLeft() + 5) + "px")     
+	  		   .style("top", Math.max(tty, $(window).scrollTop() + 5) + "px");
  				div.transition().duration(100).style("opacity", 0.95);
 			})
 			.on("mouseout", function(d) {       
