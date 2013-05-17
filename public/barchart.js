@@ -1,7 +1,7 @@
 
-histogram = {}
+barchart = {}
 
-histogram.draw = function(at) {
+barchart.draw = function(at) {
 	
 	var CHEIGHT = 600;
 	var BWIDTH = 8;

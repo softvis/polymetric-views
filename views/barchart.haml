@@ -1,6 +1,6 @@
 
 %form{:action => "#"}
-	Showing histogram for #{get_metrics.count} classes.
+	Showing bar chart for #{get_metrics.count} classes.
 	%span.formlabel order: 
 	%select#sel-order{:name => 'order', :onclick => "redraw()"}
 		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
@@ -14,11 +14,11 @@
 		- ['FLENGTH', 'LOC', 'MCOUNT', 'WMC'].each do |i|
 			%option{:value => i, :selected => (i == 'FLENGTH')}= i
 
-%script{:type => "text/javascript", :src  => "histogram.js"}
+%script{:type => "text/javascript", :src  => "barchart.js"}
 
 :javascript
 	redraw = function() {
-		histogram.draw({
+		barchart.draw({
 			sort: $('#sel-order').find(":selected").text(),
 			height: $('#sel-height').find(":selected").text(),
 			shade: $('#sel-shading').find(":selected").text(),

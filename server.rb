@@ -14,8 +14,8 @@ get '/' do
   haml :index
 end
 
-get '/histogram' do
-  haml :histogram
+get '/barchart' do
+  haml :barchart
 end
 
 get '/hotspotdiagram' do

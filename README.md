@@ -23,7 +23,7 @@ If you get an error about the HAML and/or Sinatra Ruby gems missing:
     gem install haml
     gem install sinatra
 
-After that open a webbrowser at [http://localhost:4567/histogram](http://localhost:4567/histogram). The port number may vary depending on your Sinatra configuration.
+After that open a webbrowser at [http://localhost:4567](http://localhost:4567). The port number may vary depending on your Sinatra configuration.
 
 
 ## Copyright and license
