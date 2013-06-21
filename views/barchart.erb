@@ -1,0 +1,39 @@
+<form action="#" method="get">
+	Showing bar chart for <%= get_metrics.count %> classes.
+
+	<span class="formlabel">order:</span>
+	<select id="sel-order" onclick="redraw()">
+		<option value="FLENGTH">FLENGTH</option>
+		<option value="LOC">LOC</option>
+		<option value="MCOUNT">MCOUNT</option>
+		<option value="WMC" selected>WMC</option>
+	</select>
+
+	<span class="formlabel">height:</span>
+	<select id="sel-height" onclick="redraw()">
+		<option value="FLENGTH">FLENGTH</option>
+		<option value="LOC" selected>LOC</option>
+		<option value="MCOUNT">MCOUNT</option>
+		<option value="WMC">WMC</option>
+	</select>
+
+	<span class="formlabel">shading:</span>
+	<select id="sel-shading" onclick="redraw()">
+		<option value="FLENGTH" selected>FLENGTH</option>
+		<option value="LOC">LOC</option>
+		<option value="MCOUNT">MCOUNT</option>
+		<option value="WMC">WMC</option>
+	</select>
+</form>
+	
+<script src="barchart.js"></script>
+<script>
+	redraw = function() {
+		barchart.draw({
+			sort: $('#sel-order').find(":selected").text(),
+			height: $('#sel-height').find(":selected").text(),
+			shade: $('#sel-shading').find(":selected").text(),
+		})
+	}
+	$(document).ready(redraw());
+</script>

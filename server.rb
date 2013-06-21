@@ -11,15 +11,15 @@ helpers do
 end
 
 get '/' do
-  haml :index
+  erb :index
 end
 
 get '/barchart' do
-  haml :barchart
+  erb :barchart
 end
 
 get '/hotspotdiagram' do
-  haml :hotspotdiagram
+  erb :hotspotdiagram
 end
 
 get '/data' do

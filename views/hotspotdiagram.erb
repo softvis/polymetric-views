@@ -1,0 +1,29 @@
+<% 
+@alldimensions = ['order', 'width', 'shading']
+@allmetrics = ['FLENGTH', 'LOC', 'MCOUNT', 'WMC']
+@defaults = { 'order' => 'MCOUNT', 'width' => 'MCOUNT', 'shading' => 'LOC' }
+%>
+
+<form action="#" method="get">
+	Showing hotspot diagram for <%= get_metrics.count %> classes.
+	<% for dimension in @alldimensions %>
+		<span class="formlabel"><%= dimension %>:</span>
+		<select id="sel-<%= dimension %>" onclick="redraw()">
+			<% for metric in @allmetrics %>
+				<option value="<%= metric %>"<% if(metric == @defaults[dimension]) %> selected<% end %>><%= metric %></option>
+			<% end %>
+		</select>
+	<% end %>
+</form>
+	
+<script src="hotspotdiagram.js"></script>
+<script>
+	redraw = function() {
+		hotspot.draw({
+			sort: $('#sel-order').find(":selected").text(),
+			width: $('#sel-width').find(":selected").text(),
+			shade: $('#sel-shading').find(":selected").text(),
+		})
+	}
+	$(document).ready(redraw());
+</script>
