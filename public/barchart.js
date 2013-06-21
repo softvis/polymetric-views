@@ -1,7 +1,7 @@
 
 barchart = {}
 
-barchart.draw = function(at) {
+barchart.draw = function(data, at) {
 	
 	var CHEIGHT = 600;
 	var BWIDTH = 8;

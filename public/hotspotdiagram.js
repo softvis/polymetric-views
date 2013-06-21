@@ -42,7 +42,7 @@ var quadratic = function () {
 
 hotspot = {}
 
-hotspot.draw = function(at) {
+hotspot.draw = function(data, at) {
 
 	data.shuffle().sort(function(da, db) { return da[at.sort] - db[at.sort]} )
   

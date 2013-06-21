@@ -28,12 +28,12 @@
 	
 <script src="barchart.js"></script>
 <script>
-	redraw = function() {
-		barchart.draw({
-			sort: $('#sel-order').find(":selected").text(),
-			height: $('#sel-height').find(":selected").text(),
-			shade: $('#sel-shading').find(":selected").text(),
+	redraw = function(error, data) {
+		barchart.draw(data, {
+			sort: $("#sel-order").find(":selected").text(),
+			height: $("#sel-height").find(":selected").text(),
+			shade: $("#sel-shading").find(":selected").text(),
 		})
 	}
-	$(document).ready(redraw());
+	$(document).ready(d3.json("data.json", redraw));
 </script>

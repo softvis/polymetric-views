@@ -18,12 +18,12 @@
 	
 <script src="hotspotdiagram.js"></script>
 <script>
-	redraw = function() {
-		hotspot.draw({
+	redraw = function(error, data) {
+		hotspot.draw(data, {
 			sort: $('#sel-order').find(":selected").text(),
 			width: $('#sel-width').find(":selected").text(),
 			shade: $('#sel-shading').find(":selected").text(),
 		})
 	}
-	$(document).ready(redraw());
+	$(document).ready(d3.json("data.json", redraw));
 </script>
