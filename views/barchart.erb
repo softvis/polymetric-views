@@ -1,7 +1,7 @@
 <% 
 @alldimensions = ['order', 'height', 'shading']
-@allmetrics = ['FLENGTH', 'LOC', 'MCOUNT', 'WMC']
-@defaults = { 'order' => 'MCOUNT', 'height' => 'MCOUNT', 'shading' => 'LOC' }
+@allmetrics = ['FLENGTH', 'LOC', 'MCOUNT', 'WMC', 'LOC/MCOUNT', 'WMC/LOC']
+@defaults = { 'order' => 'LOC', 'height' => 'LOC/MCOUNT', 'shading' => 'FLENGTH' }
 %>
 
 <form action="#" method="get">

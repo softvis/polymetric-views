@@ -2,13 +2,22 @@
 barchart = {}
 
 barchart.draw = function(data, at) {
-	
+
+	getv = function(d, metric) {
+		var mi = metric.split("/")
+		if(mi.length == 1) {
+			return d[metric]
+		} else {
+			return (d[mi[1]] != 0) ? (d[mi[0]] / d[mi[1]]) : 0
+		}
+	}
+		
 	var CHEIGHT = 600;
-	var BWIDTH = 8;
-	var BGAP = 2;
+	var BWIDTH = 5;
+	var BGAP = 0;
 	var LEFTSPACE = 40;
 
-	data.sort(function(da, db) { return db[at.sort] - da[at.sort]} )
+	data.sort(function(da, db) { return getv(db, at.sort) - getv(da, at.sort)} )
 
 	d3.selectAll("svg").remove();
 	var chart = d3.select("body").append("svg")
@@ -21,11 +30,11 @@ barchart.draw = function(data, at) {
 		.rangeRound([LEFTSPACE, (BWIDTH + BGAP) * data.length + LEFTSPACE])
 		
 	var yscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return d[at.height] })])
-		.rangeRound([CHEIGHT-1, 0]);
+		.domain([0, d3.max(data, function(d) { return getv(d, at.height) })])
+		.rangeRound([CHEIGHT, 1]);
 
 	var fscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return d[at.shade] })])
+		.domain([0, d3.max(data, function(d) { return getv(d, at.shade) })])
 		.range([100, 0]);
 
 	var yaxis = d3.svg.axis()
@@ -46,11 +55,11 @@ barchart.draw = function(data, at) {
 		.data(data)
 		.enter().append("rect")
 		.attr("x", function(d, i) { return xscale(i) })
-		.attr("y", function(d) { return yscale(d[at.height]) })
-		.attr("height", function(d) { return CHEIGHT -yscale(d[at.height]) })
+		.attr("y", function(d) { return yscale(getv(d, at.height)) })
+		.attr("height", function(d) { return CHEIGHT -yscale(getv(d, at.height)) })
 		.attr("width", BWIDTH)
 		.attr("shape-rendering", "crispEdges")
-		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(d[at.shade]) + "%)" })
+		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(getv(d, at.shade)) + "%)" })
 		.call(tooltip());
 				
 	chart.append("g")
@@ -58,3 +67,4 @@ barchart.draw = function(data, at) {
 		.attr("transform", "translate(" + LEFTSPACE + ", 0)")
 		.call(yaxis);
 }
+
