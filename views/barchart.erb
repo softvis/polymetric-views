@@ -5,8 +5,9 @@
 %>
 
 <form action="#" method="get">
-	Showing bar chart for classes
-
+	<input type="file" id="data-file" name="files[]">
+	<hr>
+	<p>Showing bar chart for classes
 	<% for dimension in @alldimensions %>
 		<span class="formlabel"><%= dimension %>:</span>
 		<select id="sel-<%= dimension %>" onclick="redraw()">
@@ -21,7 +22,8 @@
 <script>
 
 var data = null;
-redraw = function(error, newData) {
+
+function redraw(error, newData) {
 	data = newData || data
 	barchart.draw(data, {
 		sort: $("#sel-order").find(":selected").text(),
@@ -29,6 +31,17 @@ redraw = function(error, newData) {
 		shade: $("#sel-shading").find(":selected").text(),
 	})
 }
+
+function load(selEvent) {
+	var reader = new FileReader();
+	reader.onload = function(loadEvent) {
+		var newData = $.parseJSON(loadEvent.target.result);
+		redraw(null, newData);
+	}
+	reader.readAsText(selEvent.target.files[0]); 
+}
+
+$('input[type=file]').change(load);
 $(document).ready(d3.json("data.json", redraw));
 
 </script>
