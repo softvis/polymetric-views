@@ -31,7 +31,7 @@ barchart.draw = function(data, at) {
 		
 	var yscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return getv(d, at.height) })])
-		.rangeRound([CHEIGHT, 1]);
+		.rangeRound([CHEIGHT-1, 1]);
 
 	var fscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return getv(d, at.shade) })])
