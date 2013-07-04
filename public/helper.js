@@ -2,11 +2,11 @@
 MSE = {}
 
 MSE.parse = function(source) {
-	var model = MSEPARSER.parse(source);
 	var classes = [];
 	var classesById = {};
 	var anchorsById = {};
 	
+	var model = MSEPARSER.parse(source);
 	$(model).each(function(idx, node) {
 		switch(node.type) {
 		case "FileAnchor":
@@ -14,7 +14,7 @@ MSE.parse = function(source) {
 			break;
 		case "Class":
 			if(node.isStub != "true") {
-				node.path = anchorsById[node.sourceAnchor.val].fileName;
+				node.path = anchorsById[node.sourceAnchor.ref].fileName;
 				node.LOC = 0;
 				node.WMC = 0;
 				classesById[node.id] = node;
@@ -22,35 +22,34 @@ MSE.parse = function(source) {
 			}
 			break;
 		case "Method":
-			var cnode = classesById[node.parentType.val];
+			var cnode = classesById[node.parentType.ref];
 			if(cnode != null) {
-				cnode.WMC += node.CYCLO;
-				cnode.LOC += node.LOC;
+				cnode.WMC += node.CYCLO || 0;
+				cnode.LOC += node.LOC || 0;
 			}
 			break;
 		}
 	});
+	
 	return classes;
 }
 
-MSE.setNodeAttributes = function(type, attrs) // <- this is defined in msegrammar.js and gets called for each node when parsed
-{
+MSE.createNode = function(type, attrs) { // <- this is defined in msegrammar.js and gets called for each node when parsed
 	var metrics = [
 		/* class  */ "CBO", "NOA", "NOM", "NOPUBM",
 		/* method */ "LOC", "CYCLO" 							
 	];
-
-	var o = {type:type};
+	var node = { type: type };
 	$(attrs).each(function(i, a) {
-		var firstLetter = a.key.charAt(0);
-		if(firstLetter === firstLetter.toLowerCase()) {
-			o[a.key] = a.val;
-		} else if(metrics.indexOf(a.key) >= 0) {
-			o[a.key] = parseFloat(a.val);
+		if(a.name.charAt(0).isLowercase()) {
+		 	node[a.name] = (a.values.length > 1) ? a.values : a.values[0];
+		} else if(metrics.indexOf(a.name) >= 0) {
+			node[a.name] = parseFloat(a.values[0]);
 		}
 	});
-	return o;	
+	return node;	
 };
+
 
 
 var tooltip = function(a) {
@@ -69,7 +68,7 @@ var tooltip = function(a) {
 				}
 			  div.html("");
 				div.append("h2").text(d.name);
-				div.append("p").attr("class", "filename").text(d.path.split("/").slice(0, -1).join("/"));
+				div.append("p").attr("class", "filename").text(d.path);
 				for (var p in d) {
 				  if (d.hasOwnProperty(p) && (p.toUpperCase() == p)) {
 						div.append("p").text(p + ": " + d[p]);
@@ -95,6 +94,9 @@ var tooltip = function(a) {
 	
 };
 
+String.prototype.isLowercase = function() {
+	return this.toLowerCase() == this;
+};
 		
 Array.prototype.shuffle = function() {
 	var i = this.length, j, tempi, tempj;
@@ -108,5 +110,5 @@ Array.prototype.shuffle = function() {
 		this[j] = tempi;
 	}
 	return this;
-}
+};
 	
