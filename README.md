@@ -25,6 +25,11 @@ If you get an error about the Sinatra Ruby gem missing:
 After that open a webbrowser at [http://localhost:4567](http://localhost:4567). The port number may vary depending on your Sinatra configuration.
 
 
+## The MSE parser
+
+The MSE parser in `public/mseparser.js` was generated with [PEG.js](http://pegjs.majda.cz/). The grammar is included in `mse/mse.pegjs`. If you want to modify the grammar and regenerate the parser, run the `generate.sh` script. You will need Node.js, npm, and the pegjs package  to do so. Detailed instructions are available in the [PEG.js documentation](http://pegjs.majda.cz/documentation).
+
+
 ## Copyright and license
 
 Copyright 2013 Erik Doernenburg

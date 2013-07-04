@@ -14,7 +14,7 @@ barchart.draw = function(data, at) {
 		
 	var CHEIGHT = 600;
 	var BWIDTH = 5;
-	var BGAP = 0;
+	var BGAP = 2;
 	var LEFTSPACE = 40;
 
 	data.sort(function(da, db) { return getv(db, at.sort) - getv(da, at.sort)} )
@@ -22,7 +22,7 @@ barchart.draw = function(data, at) {
 	d3.selectAll("svg").remove();
 	var chart = d3.select("body").append("svg")
 		.attr("class", "chart")
-		.attr("width", (BWIDTH + BGAP) * data.length)
+		.attr("width", (BWIDTH + BGAP) * data.length + LEFTSPACE)
 		.attr("height", CHEIGHT + 5); /* to accomodate bottom label */
 		
 	var xscale = d3.scale.linear()
