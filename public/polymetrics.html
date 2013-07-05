@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="jquery-1.9.1.min.js"></script>
+		<script src="d3.v3.min.js"></script>
+		<script src="helper.js"></script>
+	</head>
+	<body>
+		<h1>Class Polymetrics</h1>
+
+<form action="#" method="get">
+	<input type="file" id="data-file" name="files[]">
+	<hr>
+	<!-- rest of form will be added programmatically -->
+</form>
+	
+<script src="mseparser.js"></script>
+<script src="barchart.js"></script>
+<script src="hotspotdiagram.js"></script>
+
+<script>
+
+var data = null;
+
+function redraw(error, newData) {
+	if(newData) {
+		data = MSE.parse(newData);
+	}
+	var layout = $("#sel-layout").find(":selected").attr("value");
+	switch(layout) {
+	case "barchart":
+		barchart.draw(data, {
+			sort: $("#sel-order").find(":selected").text(),
+			height: $("#sel-height").find(":selected").text(),
+			shade: $("#sel-shading").find(":selected").text(),
+		});
+		break;
+	case "hotspotdiagram":
+		hotspot.draw(data, {
+			sort: $('#sel-order').find(":selected").text(),
+			width: $('#sel-height').find(":selected").text(),
+			shade: $('#sel-shading').find(":selected").text(),
+		});
+		break;
+	}
+}
+
+function load(selEvent) {
+	var reader = new FileReader();
+	reader.onload = function(loadEvent) {
+		redraw(null, loadEvent.target.result);
+	}
+	reader.readAsText(selEvent.target.files[0]); 
+}
+
+function buildForm() {
+	var form = $('form');
+	$('input[type=file]').change(load);
+
+	var layouts = [
+		{ name: 'barchart', title: 'Bar Chart' },
+		{ name: 'hotspotdiagram', title: 'Hotspot Diagram' }
+	];
+
+	form.append($('<select>', { id: ('sel-layout'), onclick: 'redraw()'}));
+	$(layouts).each(function(li, l) {
+		$('#sel-layout').append($('<option>', { value: l.name }).text(l.title));
+	})
+
+	var dimensions = ['order', 'height', 'shading'];
+	var metrics = ['LOC', 'NOM', 'WMC', 'LOC/NOM', 'WMC/LOC', 'CBO', 'NOA', 'NOPUBM'];
+
+	$(dimensions).each(function(di, d) {
+		form.append($('<span>', { class: 'formlabel'}).text(d+":"));
+		form.append($('<select>', { id: ('sel-'+d), onclick: 'redraw()'}));
+		$(metrics).each(function(mi, m) {
+			$('#sel-'+d).append($('<option>', { value: m }).text(m));
+		});
+	});
+}
+
+buildForm();
+$(document).ready(d3.text("data.mse", redraw));
+
+</script>
+
+<div id="chart-wrapper">
+</div>
+
+	</body>
+</html>
