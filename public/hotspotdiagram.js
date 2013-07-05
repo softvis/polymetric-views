@@ -44,23 +44,23 @@ hotspot = {}
 
 hotspot.draw = function(data, at) {
 
-	data.shuffle().sort(function(da, db) { return da[at.sort] - db[at.sort]} )
+	data.shuffle().sort(function(da, db) { return CPM.getv(da, at.sort) - CPM.getv(db, at.sort) } )
   
   var wscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return d[at.width] })])
+    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.width) })])
     .rangeRound([4, 40]);
   
 	var fscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return d[at.shade] })])
+    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
     .range([100, 0]);
 
 	var layout = quadratic()
-		.size(function(d) { return wscale(d[at.width]) });
+		.size(function(d) { return wscale(CPM.getv(d, at.width)) });
 		 
 	var items = layout(data);
 	
 	d3.selectAll("svg").remove();
-	var chart = d3.select("body").append("svg")
+	var chart = d3.select("#chart-wrapper").append("svg")
     .attr("class", "chart")
     .attr("width", layout.xmax())
     .attr("height", layout.ymax());
@@ -70,10 +70,10 @@ hotspot.draw = function(data, at) {
     .enter().append("rect")
     .attr("x", function(d) { return d.x })
     .attr("y", function(d) { return d.y })
-    .attr("width", function(d) { return wscale(d.item[at.width]) })
-    .attr("height", function(d) { return wscale(d.item[at.width]) })
+    .attr("width", function(d) { return wscale(CPM.getv(d.item, at.width)) })
+    .attr("height", function(d) { return wscale(CPM.getv(d.item, at.width)) })
 		.attr("shape-rendering", "crispEdges")
-    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(d.item[at.shade]) + "%)" })
+    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d.item, at.shade)) + "%)" })
 		.call(tooltip(function(d) { return d.item }));
 }
 

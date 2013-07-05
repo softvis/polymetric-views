@@ -51,6 +51,17 @@ MSE.createNode = function(type, attrs) { // <- this is defined in msegrammar.js 
 };
 
 
+CPM = {}
+
+CPM.getv = function(data, metric) {
+	var mi = metric.split("/")
+	if(mi.length == 1) {
+		return data[metric]
+	} else {
+		return (data[mi[1]] != 0) ? (data[mi[0]] / data[mi[1]]) : 0
+	}
+}
+
 
 var tooltip = function(a) {
 	
