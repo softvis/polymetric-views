@@ -2,7 +2,7 @@ var quadratic = function () {
 	
 	var PADDING = 2;	/* frame around entire layout */
 	var SPACING = 2; /* minimum space between boxes */
-	var sizer = undefined, xmax = 0, ymax = 0;
+	var wsizer = undefined, hsizer = undefined, xmax = 0, ymax = 0;
 	
 	function quadratic(data) {
 		var wrappers = [];
@@ -10,9 +10,9 @@ var quadratic = function () {
 		var xp = PADDING, yp = PADDING;
 		for (var i = 0; i < data.length; i++) {
 			var wrapper = { x: xp, y: yp, item: data[i] };
-			xp += sizer(data[i]) + SPACING
+			xp += wsizer(data[i]) + SPACING
 			xmax = Math.max(xmax, xp)
-			ymax = Math.max(ymax, yp + sizer(data[i]))
+			ymax = Math.max(ymax, yp + hsizer(data[i]))
 			if((i + 1) % numh == 0) {
 				xp = PADDING
 				yp = ymax + SPACING
@@ -22,9 +22,15 @@ var quadratic = function () {
 		return wrappers;
 	}
 	
-	quadratic.size = function(x) {
-    if (!arguments.length) return sizer;
-    sizer = x;
+	quadratic.width = function(x) {
+    if (!arguments.length) return wsizer;
+    wsizer = x;
+    return quadratic;
+	}
+
+	quadratic.height = function(x) {
+    if (!arguments.length) return hsizer;
+    hsizer = x;
     return quadratic;
 	}
 	
@@ -55,7 +61,8 @@ hotspot.draw = function(data, at) {
     .range([100, 0]);
 
 	var layout = quadratic()
-		.size(function(d) { return wscale(CPM.getv(d, at.width)) });
+		.width(function(d) { return wscale(CPM.getv(d, at.width)) })
+		.height(function(d) { return wscale(CPM.getv(d, at.height)) });
 		 
 	var items = layout(data);
 	
@@ -71,7 +78,7 @@ hotspot.draw = function(data, at) {
     .attr("x", function(d) { return d.x })
     .attr("y", function(d) { return d.y })
     .attr("width", function(d) { return wscale(CPM.getv(d.item, at.width)) })
-    .attr("height", function(d) { return wscale(CPM.getv(d.item, at.width)) })
+    .attr("height", function(d) { return wscale(CPM.getv(d.item, at.height)) })
 		.attr("shape-rendering", "crispEdges")
     .style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d.item, at.shade)) + "%)" })
 		.call(tooltip(function(d) { return d.item }));

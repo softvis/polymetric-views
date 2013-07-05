@@ -34,7 +34,7 @@ function buildForm() {
 		$('#sel-layout').append($('<option>', { value: l.name }).text(l.title));
 	})
 
-	var dimensions = ['order', 'height', 'shading'];
+	var dimensions = ['order', 'width', 'height', 'shading'];
 	var metrics = ['LOC', 'NOM', 'WMC', 'LOC/NOM', 'WMC/LOC', 'CBO', 'NOA', 'NOPUBM'];
 
 	$(dimensions).each(function(di, d) {
@@ -64,7 +64,8 @@ function redraw(error, newData) {
 	case "hotspotdiagram":
 		hotspot.draw(data, {
 			sort: $('#sel-order').find(":selected").text(),
-			width: $('#sel-height').find(":selected").text(),
+			width: $('#sel-width').find(":selected").text(),
+			height: $('#sel-height').find(":selected").text(),
 			shade: $('#sel-shading').find(":selected").text(),
 		});
 		break;
