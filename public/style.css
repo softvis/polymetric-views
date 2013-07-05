@@ -22,6 +22,11 @@ form {
 	margin-bottom: 2em;
 }
 
+#chart-wrapper {
+	width: 100%;
+	overflow-x: auto;
+}
+
 .chart rect {
   stroke: black;
 }
