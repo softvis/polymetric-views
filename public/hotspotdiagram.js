@@ -53,6 +53,10 @@ CPM.hotspot = function(data, at) {
   var wscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.width) })])
     .rangeRound([4, 40]);
+
+  var hscale = d3.scale.linear()
+    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.height) })])
+    .rangeRound([4, 40]);
   
 	var fscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
@@ -60,7 +64,7 @@ CPM.hotspot = function(data, at) {
 
 	var layout = quadratic()
 		.width(function(d) { return wscale(CPM.getv(d, at.width)) })
-		.height(function(d) { return wscale(CPM.getv(d, at.height)) });
+		.height(function(d) { return hscale(CPM.getv(d, at.height)) });
 		 
 	var items = layout(data);
 	
@@ -76,7 +80,7 @@ CPM.hotspot = function(data, at) {
     .attr("x", function(d) { return d.x })
     .attr("y", function(d) { return d.y })
     .attr("width", function(d) { return wscale(CPM.getv(d.item, at.width)) })
-    .attr("height", function(d) { return wscale(CPM.getv(d.item, at.height)) })
+    .attr("height", function(d) { return hscale(CPM.getv(d.item, at.height)) })
 		.attr("shape-rendering", "crispEdges")
     .style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d.item, at.shade)) + "%)" })
 		.call(tooltip(function(d) { return d.item }));
