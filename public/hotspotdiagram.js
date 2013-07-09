@@ -50,12 +50,20 @@ CPM.hotspot = function(data, at) {
 
 	data.shuffle().sort(function(da, db) { return CPM.getv(da, at.sort) - CPM.getv(db, at.sort) } )
   
-  var wscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.width) })])
+	var wmax = d3.max(data, function(d) { return CPM.getv(d, at.width) });
+	var hmax = d3.max(data, function(d) { return CPM.getv(d, at.height) });
+	
+	if(at.width.match("^NO") && at.height.match("^NO")) {
+		// magic proportional mode: if both are "number of" they'll get the same scale
+		wmax = hmax = Math.max(wmax, hmax);
+	} 
+  
+	var wscale = d3.scale.linear()
+    .domain([0, wmax])
     .rangeRound([4, 40]);
 
   var hscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.height) })])
+    .domain([0, hmax])
     .rangeRound([4, 40]);
   
 	var fscale = d3.scale.linear()

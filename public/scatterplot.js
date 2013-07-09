@@ -21,13 +21,21 @@ CPM.scatterplot = function(data, at) {
 		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.ypos) })])
 		.rangeRound([TOPSPACE, CHEIGHT - MAXWH]);
 
-	var wscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.width) })])
-		.rangeRound([4, MAXWH]);
+	var wmax = d3.max(data, function(d) { return CPM.getv(d, at.width) });
+	var hmax = d3.max(data, function(d) { return CPM.getv(d, at.height) });
 
-	var hscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.height) })])
-		.rangeRound([4, MAXWH]);
+	if(at.width.match("^NO") && at.height.match("^NO")) {
+		// magic proportional mode: if both are "number of" they'll get the same scale
+		wmax = hmax = Math.max(wmax, hmax);
+	} 
+
+	var wscale = d3.scale.linear()
+    .domain([0, wmax])
+    .rangeRound([4, MAXWH]);
+
+  var hscale = d3.scale.linear()
+    .domain([0, hmax])
+    .rangeRound([4, MAXWH]);
 
 	var fscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
