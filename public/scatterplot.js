@@ -34,16 +34,6 @@ scatterplot.draw = function(data, at) {
 	var fscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
 		.range([100, 0]);
-
-	var xaxis = d3.svg.axis()
-		.scale(xscale)
-		.orient("top")
-		.ticks(10);
-
-	var yaxis = d3.svg.axis()
-		.scale(yscale)
-		.orient("left")
-		.ticks(10);
 		
 	chart.selectAll("rect")
 		.data(data)
@@ -55,16 +45,6 @@ scatterplot.draw = function(data, at) {
 		.attr("shape-rendering", "crispEdges")
 		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)" })
 		.call(tooltip());
-				
-	chart.append("g")
-		.attr("class", "axis")
-		.attr("transform", "translate(" + LEFTSPACE + ", 0)")
-		.call(yaxis);
-
-	chart.append("g")
-		.attr("class", "axis")
-		.attr("transform", "translate(0, " + TOPSPACE + ")")
-		.call(xaxis);
 				
 }
 
