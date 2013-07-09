@@ -19,7 +19,7 @@ select, input {
 }
 
 form {
-	margin-bottom: 2em;
+	margin-bottom: 1em;
 }
 
 #chart-wrapper {
@@ -32,7 +32,8 @@ form {
 }
 
 .axis path {
-	opacity: 0;	
+	stroke: none;
+	fill: none;
 }
 
 .axis line {

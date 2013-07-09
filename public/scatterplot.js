@@ -6,6 +6,8 @@ scatterplot.draw = function(data, at) {
 	var CHEIGHT = 700;
 	var CWIDTH = 700;
 	var MAXWH = 40;
+	var LEFTSPACE = 40;
+	var TOPSPACE = 20;
 
 	d3.selectAll("svg").remove();
 	var chart = d3.select("#chart-wrapper").append("svg")
@@ -15,11 +17,11 @@ scatterplot.draw = function(data, at) {
 		
 	var xscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.xpos) })])
-		.rangeRound([1, CWIDTH - MAXWH])
+		.rangeRound([LEFTSPACE, CWIDTH - MAXWH])
 		
 	var yscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.ypos) })])
-		.rangeRound([1, CHEIGHT - MAXWH]);
+		.rangeRound([TOPSPACE, CHEIGHT - MAXWH]);
 
 	var wscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.width) })])
@@ -32,6 +34,11 @@ scatterplot.draw = function(data, at) {
 	var fscale = d3.scale.linear()
 		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
 		.range([100, 0]);
+
+	var xaxis = d3.svg.axis()
+		.scale(xscale)
+		.orient("top")
+		.ticks(10);
 
 	var yaxis = d3.svg.axis()
 		.scale(yscale)
@@ -53,5 +60,11 @@ scatterplot.draw = function(data, at) {
 		.attr("class", "axis")
 		.attr("transform", "translate(" + LEFTSPACE + ", 0)")
 		.call(yaxis);
+
+	chart.append("g")
+		.attr("class", "axis")
+		.attr("transform", "translate(0, " + TOPSPACE + ")")
+		.call(xaxis);
+				
 }
 
