@@ -1,7 +1,5 @@
 
-scatterplot = {}
-
-scatterplot.draw = function(data, at) {
+CPM.scatterplot = function(data, at) {
 
 	var CHEIGHT = 700;
 	var CWIDTH = 700;

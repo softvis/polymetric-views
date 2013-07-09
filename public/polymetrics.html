@@ -28,7 +28,7 @@ CPM.dimensions = ['order', 'x-pos', 'y-pos', 'width', 'height', 'shading'];
 CPM.metrics = ['LOC', 'NOM', 'WMC', 'LOC/NOM', 'WMC/LOC', 'CBO', 'NOA', 'NOPUBM'];
 
 CPM.layouts = [
-	{ name: 'quadratic', title: 'Quadratic', dimensions: ['order', 'width', 'height', 'shading'] },
+	{ name: 'hotspot', title: 'Hotspot Diagram', dimensions: ['order', 'width', 'height', 'shading'] },
 	{ name: 'scatterplot', title: 'Scatter Plot', dimensions: ['x-pos', 'y-pos', 'width', 'height', 'shading'] },
 	{ name: 'barchart', title: 'Bar Chart', dimensions: ['order', 'height', 'shading'] },
 ];
@@ -68,8 +68,8 @@ function redraw(error, newData) {
 		}
 	})
 	switch(layout) {
-	case "quadratic":
-		hotspot.draw(data, {
+	case "hotspot":
+		CPM.hotspot(data, {
 			sort: $('#sel-order').find(":selected").text(),
 			width: $('#sel-width').find(":selected").text(),
 			height: $('#sel-height').find(":selected").text(),
@@ -77,7 +77,7 @@ function redraw(error, newData) {
 		});
 		break;
 	case "scatterplot":
-		scatterplot.draw(data, {
+		CPM.scatterplot(data, {
 			xpos: $("#sel-x-pos").find(":selected").text(),
 			ypos: $("#sel-y-pos").find(":selected").text(),
 			width: $('#sel-width').find(":selected").text(),
@@ -86,7 +86,7 @@ function redraw(error, newData) {
 		});
 		break;
 	case "barchart":
-		barchart.draw(data, {
+		CPM.barchart(data, {
 			sort: $("#sel-order").find(":selected").text(),
 			height: $("#sel-height").find(":selected").text(),
 			shade: $("#sel-shading").find(":selected").text(),

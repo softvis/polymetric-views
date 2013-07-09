@@ -1,7 +1,5 @@
 
-barchart = {}
-
-barchart.draw = function(data, at) {
+CPM.barchart = function(data, at) {
 
 	var CHEIGHT = 600;
 	var BWIDTH = 5;

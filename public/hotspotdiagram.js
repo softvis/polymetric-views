@@ -46,9 +46,7 @@ var quadratic = function () {
 }
 
 
-hotspot = {}
-
-hotspot.draw = function(data, at) {
+CPM.hotspot = function(data, at) {
 
 	data.shuffle().sort(function(da, db) { return CPM.getv(da, at.sort) - CPM.getv(db, at.sort) } )
   
