@@ -6,8 +6,9 @@
 		<script src="d3.v3.min.js"></script>
 		<script src="helper.js"></script>
 		<script src="mseparser.js"></script>
-		<script src="barchart.js"></script>
 		<script src="hotspotdiagram.js"></script>
+		<script src="scatterplot.js"></script>
+		<script src="barchart.js"></script>
 	</head>
 	<body>
 		<h1>Class Polymetrics</h1>
@@ -73,6 +74,15 @@ function redraw(error, newData) {
 			width: $('#sel-width').find(":selected").text(),
 			height: $('#sel-height').find(":selected").text(),
 			shade: $('#sel-shading').find(":selected").text(),
+		});
+		break;
+	case "scatterplot":
+		scatterplot.draw(data, {
+			xpos: $("#sel-x-pos").find(":selected").text(),
+			ypos: $("#sel-y-pos").find(":selected").text(),
+			width: $('#sel-width').find(":selected").text(),
+			height: $('#sel-height').find(":selected").text(),
+			shade: $("#sel-shading").find(":selected").text(),
 		});
 		break;
 	case "barchart":
