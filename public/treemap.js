@@ -29,7 +29,7 @@ CPM.treemap = function(data, at) {
 		.round(true)
 		.sort(function(da, db) { return CPM.getv(da, at.order) - CPM.getv(db, at.order) })
 		.value(function(d) { return CPM.getv(d, at.order) })
-		.children(function(d) { return d.subpackages; });
+		.children(function(d) { return d.items; });
 	
 	var nodes = layout.nodes(root);
 	
