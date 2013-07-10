@@ -8,6 +8,7 @@
 		<script src="mseparser.js"></script>
 		<script src="hotspotdiagram.js"></script>
 		<script src="scatterplot.js"></script>
+		<script src="tree.js"></script>
 		<script src="barchart.js"></script>
 	</head>
 	<body>
@@ -28,6 +29,7 @@ CPM.dimensions = ['order', 'x-pos', 'y-pos', 'width', 'height', 'shading'];
 CPM.metrics = ['LOC', 'NOM', 'WMC', 'LOC/NOM', 'WMC/LOC', 'CBO', 'NOA', 'NOPUBM'];
 
 CPM.layouts = [
+	{ name: 'tree', title: 'Tree', dimensions: ['width', 'height', 'shading'] },
 	{ name: 'hotspot', title: 'Hotspot Diagram', dimensions: ['order', 'width', 'height', 'shading'] },
 	{ name: 'scatterplot', title: 'Scatter Plot', dimensions: ['x-pos', 'y-pos', 'width', 'height', 'shading'] },
 	{ name: 'barchart', title: 'Bar Chart', dimensions: ['order', 'height', 'shading'] },
@@ -80,6 +82,13 @@ function redraw(error, newData) {
 		CPM.scatterplot(data, {
 			xpos: $("#sel-x-pos").find(":selected").text(),
 			ypos: $("#sel-y-pos").find(":selected").text(),
+			width: $('#sel-width').find(":selected").text(),
+			height: $('#sel-height').find(":selected").text(),
+			shade: $("#sel-shading").find(":selected").text(),
+		});
+		break;
+	case "tree":
+		CPM.tree(data, {
 			width: $('#sel-width').find(":selected").text(),
 			height: $('#sel-height').find(":selected").text(),
 			shade: $("#sel-shading").find(":selected").text(),

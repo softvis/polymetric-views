@@ -14,11 +14,20 @@ MSE.parse = function(source) {
 			break;
 		case "Class":
 			if(node.isStub != "true") {
+				node.subclasses = [];
 				node.path = anchorsById[node.sourceAnchor.ref].fileName;
 				node.LOC = 0;
 				node.WMC = 0;
 				classesById[node.id] = node;
 				classes.push(node);
+			}
+			break;
+		case "Inheritance":
+			var superclass = classesById[node.superclass.ref];
+			var subclass = classesById[node.subclass.ref];
+			if((superclass != null) && (subclass != null)) {
+				subclass.superclass = superclass;
+				superclass.subclasses.push(subclass);
 			}
 			break;
 		case "Method":

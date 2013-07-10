@@ -74,3 +74,9 @@ div.tooltip {
 	margin: 0;
 }
 
+.link 
+{
+  fill: none;
+  stroke: #333;
+  stroke-width: 1px;
+}
