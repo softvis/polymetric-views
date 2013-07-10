@@ -23,6 +23,7 @@ CPM.treemap = function(data, at) {
 		.padding(3)
 		.mode("squarify")
 		.round(true)
+		.sort(function(da, db) { return CPM.getv(da, at.order) - CPM.getv(db, at.order) })
 		.value(function(d) { return CPM.getv(d, at.order) });
 	
 	var nodes = layout.nodes(root);
