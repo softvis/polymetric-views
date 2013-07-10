@@ -12,7 +12,7 @@ CPM.treemap = function(data, at) {
 			roots.push(p);
 		}
 	})
-	var root = { name: "", children: roots };
+	var root = (roots.length == 1) ? roots[0] : { name: "", children: roots };
 
 	var fscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
