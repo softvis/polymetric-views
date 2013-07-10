@@ -4,15 +4,19 @@ CPM.treemap = function(data, at) {
 	var roots = [];
 	$.each(data, function(idx, cls) {
 		var p = cls.package;
-		while(p.parent) {
-			p = p.parent;
+		while(p.parentPackage) {
+			p = p.parentPackage;
 		}
 		// this will be inefficient if there are many roots
 		if (roots.indexOf(p) < 0) {
 			roots.push(p);
 		}
-	})
+	});
 	var root = (roots.length == 1) ? roots[0] : { name: "", children: roots };
+
+	$.each(data, function(idx, cls) {
+		cls.children = [];
+	});
 
 	var fscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
@@ -24,7 +28,8 @@ CPM.treemap = function(data, at) {
 		.mode("squarify")
 		.round(true)
 		.sort(function(da, db) { return CPM.getv(da, at.order) - CPM.getv(db, at.order) })
-		.value(function(d) { return CPM.getv(d, at.order) });
+		.value(function(d) { return CPM.getv(d, at.order) })
+		.children(function(d) { return d.subpackages; });
 	
 	var nodes = layout.nodes(root);
 	

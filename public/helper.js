@@ -15,7 +15,7 @@ MSE.parse = function(source) {
 			if(node.name != "_unknown_package_") {
 				var existing = packagesByName[node.name];
 				if(!existing) {
-					node.children = [];
+					node.subpackages = [];
 					packagesById[node.id] = node;
 					packagesByName[node.name] = node;
 				} else {
@@ -28,14 +28,14 @@ MSE.parse = function(source) {
 					var name = path.join("::");
 					var p = packagesByName[name];
 					if(p) {
-						p.children.push(child);
-						child.parent = p;
+						p.subpackages.push(child);
+						child.parentPackage = p;
 						break;
 					}
-					p = { type: "Package", name: name, children: [] };
+					p = { type: "Package", name: name, subpackages: [] };
 					packagesByName[name] = p
-					p.children.push(child);
-					child.parent = p;
+					p.subpackages.push(child);
+					child.parentPackage = p;
 					child = p;
 					path = path.slice(0, -1);
 				}
@@ -45,7 +45,7 @@ MSE.parse = function(source) {
 			if(node.isStub != "true") {
 				node.path = anchorsById[node.sourceAnchor.ref].fileName;
 				node.package = packagesById[node.parentPackage.ref];
-				node.package.children.push(node);
+				node.package.subpackages.push(node);
 				node.subclasses = [];
 				node.LOC = 0;
 				node.WMC = 0;
