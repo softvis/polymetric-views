@@ -1,19 +1,29 @@
 
 CPM.treemap = function(data, at) {
 
+	var roots = [];
+	$.each(data, function(idx, cls) {
+		var p = cls.package;
+		while(p.parent) {
+			p = p.parent;
+		}
+		// this will be inefficient if there are many roots
+		if (roots.indexOf(p) < 0) {
+			roots.push(p);
+		}
+	})
+	var root = { name: "", children: roots };
+
 	var fscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
-    .range([100, 0]);
+    .range([100, 20]);
 
 	var layout = d3.layout.treemap()
-		.size([700, 600])
-		.padding(4)
+		.size([699, 699])
+		.padding(3)
 		.mode("squarify")
 		.round(true)
-		.value(function(d) { return CPM.getv(d, at.order) })
-		.children(function(d) { return d.subclasses; });
-		 
-	var root = { name: "ROOT", subclasses: $.grep(data, function(d) { return !("superclass" in d) }) };
+		.value(function(d) { return CPM.getv(d, at.order) });
 	
 	var nodes = layout.nodes(root);
 	
@@ -28,11 +38,17 @@ CPM.treemap = function(data, at) {
 	  .enter()
 	  .append("rect")
 		.attr("x", function(d) { return d.x })
-		.attr("y", function(d) { return d.y })
+		.attr("y", function(d) { return d.y + 1 })
 		.attr("width", function(d) { return d.dx })
 		.attr("height", function(d) { return d.dy })
 		.attr("shape-rendering", "crispEdges")
-		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)" })
+		.style("fill", function(d) { 
+			switch(d.type) {
+			case "Class": return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)";
+			case "Package": return "#CCC";
+			default: return "white";
+			}
+		})
 		.call(tooltip());
   
 }

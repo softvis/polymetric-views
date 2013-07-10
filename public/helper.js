@@ -2,6 +2,8 @@
 MSE = {}
 
 MSE.parse = function(source) {
+	var packagesById = {};
+	var packagesByName = {};
 	var classes = [];
 	var classesById = {};
 	var anchorsById = {};
@@ -9,13 +11,42 @@ MSE.parse = function(source) {
 	var model = MSEPARSER.parse(source);
 	$(model).each(function(idx, node) {
 		switch(node.type) {
-		case "FileAnchor":
-			anchorsById[node.id] = node;
+		case "Package":
+			if(node.name != "_unknown_package_") {
+				var existing = packagesByName[node.name];
+				if(!existing) {
+					node.children = [];
+					packagesById[node.id] = node;
+					packagesByName[node.name] = node;
+				} else {
+					existing.id = node.ie;
+					packagesById[node.id] = existing;
+				}
+				var child = node;
+				var path = node.name.split("::").slice(0, -1);
+				while(path.length > 0) {
+					var name = path.join("::");
+					var p = packagesByName[name];
+					if(p) {
+						p.children.push(child);
+						child.parent = p;
+						break;
+					}
+					p = { type: "Package", name: name, children: [] };
+					packagesByName[name] = p
+					p.children.push(child);
+					child.parent = p;
+					child = p;
+					path = path.slice(0, -1);
+				}
+			}
 			break;
 		case "Class":
 			if(node.isStub != "true") {
-				node.subclasses = [];
 				node.path = anchorsById[node.sourceAnchor.ref].fileName;
+				node.package = packagesById[node.parentPackage.ref];
+				node.package.children.push(node);
+				node.subclasses = [];
 				node.LOC = 0;
 				node.WMC = 0;
 				classesById[node.id] = node;
@@ -36,6 +67,9 @@ MSE.parse = function(source) {
 				cnode.WMC += node.CYCLO || 0;
 				cnode.LOC += node.LOC || 0;
 			}
+			break;
+		case "FileAnchor":
+			anchorsById[node.id] = node;
 			break;
 		}
 	});
