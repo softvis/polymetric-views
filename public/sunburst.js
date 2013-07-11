@@ -7,8 +7,8 @@ CPM.sunburst = function(data, at) {
 
 	var roots = CPM.findRoots(data);
 	var root = (roots.length == 1) ? roots[0] : { name: "", children: roots };
-	if (!("totalItems" in root)) {
-		CPM.calcTotalItems(root);
+	if (!("NOC" in root)) {
+		CPM.calcNOC(root);
 	}
 
 	$.each(data, function(idx, cls) {
@@ -17,10 +17,10 @@ CPM.sunburst = function(data, at) {
 
 	var fscale = d3.scale.linear()
     .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
-    .range([80, 10]);
+    .range([80, 20]);
 
 	var fscale2 = d3.scale.linear()
-    .domain([0, root.totalItems])
+    .domain([0, root.NOC])
     .range([80, 40]);
 			
 	var layout = d3.layout.treemap()
@@ -65,7 +65,7 @@ CPM.sunburst = function(data, at) {
 		.style("fill", function(d) { 
 			switch(d.type) {
 			case "Class": return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)";
-			case "Package": return "hsl(200, 0%, " + fscale2(d.totalItems) + "%)";
+			case "Package": return "hsl(200, 0%, " + fscale2(d.NOC) + "%)";
 			default: return "white";
 			}
 		})

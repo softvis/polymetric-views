@@ -110,15 +110,19 @@ CPM.findRoots = function(items) {
 	return roots;
 }
 
-CPM.calcTotalItems = function (item) {
-	item.totalItems = 1;
-	if("items" in item) {
-		$.each(item.items, function(idx, i) {
-			item.totalItems += CPM.calcTotalItems(i);
-		});
-	}
-	return item.totalItems;
+
+CPM.calcNOC = function(pkg) {
+	pkg.NOC = 0;
+	$.each(pkg.items, function(idx, item) {
+		if (item.type == "Class") {
+			pkg.NOC += 1;
+		} else {
+			pkg.NOC += CPM.calcNOC(item);
+		}
+	})
+	return pkg.NOC;
 }
+
 
 CPM.getv = function(data, metric) {
 	var mi = metric.split("/")
