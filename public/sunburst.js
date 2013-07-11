@@ -5,18 +5,11 @@ CPM.sunburst = function(data, at) {
 	var CHEIGHT = CWIDTH;
 	var RADIUS = CWIDTH / 2;
 
-	var roots = [];
-	$.each(data, function(idx, cls) {
-		var p = cls.package;
-		while(p.parentPackage) {
-			p = p.parentPackage;
-		}
-		// this will be inefficient if there are many roots
-		if (roots.indexOf(p) < 0) {
-			roots.push(p);
-		}
-	});
+	var roots = CPM.findRoots(data);
 	var root = (roots.length == 1) ? roots[0] : { name: "", children: roots };
+	if (!("totalItems" in root)) {
+		CPM.calcTotalItems(root);
+	}
 
 	$.each(data, function(idx, cls) {
 		cls.children = [];
@@ -27,8 +20,8 @@ CPM.sunburst = function(data, at) {
     .range([80, 10]);
 
 	var fscale2 = d3.scale.linear()
-    .domain([0, 10])
-    .range([40, 80]);
+    .domain([0, root.totalItems])
+    .range([80, 40]);
 			
 	var layout = d3.layout.treemap()
 		.size([CWIDTH, CHEIGHT])
@@ -72,7 +65,7 @@ CPM.sunburst = function(data, at) {
 		.style("fill", function(d) { 
 			switch(d.type) {
 			case "Class": return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)";
-			case "Package": return "hsl(200, 0%, " + fscale2(d.depth) + "%)";
+			case "Package": return "hsl(200, 0%, " + fscale2(d.totalItems) + "%)";
 			default: return "white";
 			}
 		})

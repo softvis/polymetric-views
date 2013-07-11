@@ -73,7 +73,6 @@ MSE.parse = function(source) {
 			break;
 		}
 	});
-	
 	return classes;
 }
 
@@ -95,6 +94,31 @@ MSE.createNode = function(type, attrs) { // <- this is defined in msegrammar.js 
 
 
 CPM = {}
+
+CPM.findRoots = function(items) {
+	var roots = [];
+	$.each(data, function(idx, cls) {
+		var p = cls.package;
+		while(p.parentPackage) {
+			p = p.parentPackage;
+		}
+		// this will be inefficient if there are many roots
+		if (roots.indexOf(p) < 0) {
+			roots.push(p);
+		}
+	});
+	return roots;
+}
+
+CPM.calcTotalItems = function (item) {
+	item.totalItems = 1;
+	if("items" in item) {
+		$.each(item.items, function(idx, i) {
+			item.totalItems += CPM.calcTotalItems(i);
+		});
+	}
+	return item.totalItems;
+}
 
 CPM.getv = function(data, metric) {
 	var mi = metric.split("/")
