@@ -62,6 +62,7 @@ function redraw(error, newData) {
 	if(newData) {
 		data = MSE.parse(newData);
 	}
+	$("#loading").hide(1);
 	var layout = $("#layout").find(":selected").attr("value");
 	var dimensions = $.grep(PMV.layouts, function(l) { return l.name === layout })[0].dimensions;
 	$('select[id|="sel"]').each(function(idx, el) {
@@ -131,6 +132,8 @@ buildForm();
 $(document).ready(d3.text("data.mse", redraw));
 
 		</script>
+
+		<div id="loading">Loading metrics data. This can take a moment.</div>
 
 		<div id="chart-wrapper">
 
