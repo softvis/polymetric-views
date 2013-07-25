@@ -1,12 +1,12 @@
 
-CPM.barchart = function(data, at) {
+PMV.barchart = function(data, at) {
 
 	var CHEIGHT = 600;
 	var BWIDTH = 5;
 	var BGAP = 2;
 	var LEFTSPACE = 40;
 
-	data.sort(function(da, db) { return CPM.getv(db, at.sort) - CPM.getv(da, at.sort)} )
+	data.sort(function(da, db) { return PMV.getv(db, at.sort) - PMV.getv(da, at.sort)} )
 
 	d3.selectAll("svg").remove();
 	var chart = d3.select("#chart-wrapper").append("svg")
@@ -19,11 +19,11 @@ CPM.barchart = function(data, at) {
 		.rangeRound([LEFTSPACE, (BWIDTH + BGAP) * data.length + LEFTSPACE])
 		
 	var yscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.height) })])
+		.domain([0, d3.max(data, function(d) { return PMV.getv(d, at.height) })])
 		.rangeRound([CHEIGHT-1, 1]);
 
 	var fscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
+		.domain([0, d3.max(data, function(d) { return PMV.getv(d, at.shade) })])
 		.range([100, 0]);
 
 	var yaxis = d3.svg.axis()
@@ -44,11 +44,11 @@ CPM.barchart = function(data, at) {
 		.data(data)
 		.enter().append("rect")
 		.attr("x", function(d, i) { return xscale(i) })
-		.attr("y", function(d) { return yscale(CPM.getv(d, at.height)) })
-		.attr("height", function(d) { return CHEIGHT -yscale(CPM.getv(d, at.height)) })
+		.attr("y", function(d) { return yscale(PMV.getv(d, at.height)) })
+		.attr("height", function(d) { return CHEIGHT -yscale(PMV.getv(d, at.height)) })
 		.attr("width", BWIDTH)
 		.attr("shape-rendering", "crispEdges")
-		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)" })
+		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(PMV.getv(d, at.shade)) + "%)" })
 		.call(tooltip());
 				
 	chart.append("g")

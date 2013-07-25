@@ -1,4 +1,4 @@
-# Class Polymetrics
+# Polymetric Views
 
 ## Getting the metrics data with inFamix
 

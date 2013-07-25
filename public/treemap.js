@@ -1,5 +1,5 @@
 
-CPM.treemap = function(data, at) {
+PMV.treemap = function(data, at) {
 
 	var roots = [];
 	$.each(data, function(idx, cls) {
@@ -19,7 +19,7 @@ CPM.treemap = function(data, at) {
 	});
 
 	var fscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
+    .domain([0, d3.max(data, function(d) { return PMV.getv(d, at.shade) })])
     .range([100, 20]);
 
 	var layout = d3.layout.treemap()
@@ -27,8 +27,8 @@ CPM.treemap = function(data, at) {
 		.padding(3)
 		.mode("squarify")
 		.round(true)
-		.sort(function(da, db) { return CPM.getv(da, at.order) - CPM.getv(db, at.order) })
-		.value(function(d) { return CPM.getv(d, at.order) })
+		.sort(function(da, db) { return PMV.getv(da, at.order) - PMV.getv(db, at.order) })
+		.value(function(d) { return PMV.getv(d, at.order) })
 		.children(function(d) { return d.items; });
 	
 	var nodes = layout.nodes(root);
@@ -50,7 +50,7 @@ CPM.treemap = function(data, at) {
 		.attr("shape-rendering", "crispEdges")
 		.style("fill", function(d) { 
 			switch(d.type) {
-			case "Class": return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)";
+			case "Class": return "hsl(200, 80%, " + fscale(PMV.getv(d, at.shade)) + "%)";
 			case "Package": return "#CCC";
 			default: return "white";
 			}

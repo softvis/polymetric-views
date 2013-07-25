@@ -93,9 +93,9 @@ MSE.createNode = function(type, attrs) { // <- this is defined in msegrammar.js 
 };
 
 
-CPM = {}
+PMV = {}
 
-CPM.findRoots = function(items) {
+PMV.findRoots = function(items) {
 	var roots = [];
 	$.each(data, function(idx, cls) {
 		var p = cls.package;
@@ -111,20 +111,20 @@ CPM.findRoots = function(items) {
 }
 
 
-CPM.calcNOC = function(pkg) {
+PMV.calcNOC = function(pkg) {
 	pkg.NOC = 0;
 	$.each(pkg.items, function(idx, item) {
 		if (item.type == "Class") {
 			pkg.NOC += 1;
 		} else {
-			pkg.NOC += CPM.calcNOC(item);
+			pkg.NOC += PMV.calcNOC(item);
 		}
 	})
 	return pkg.NOC;
 }
 
 
-CPM.getv = function(data, metric) {
+PMV.getv = function(data, metric) {
 	var mi = metric.split("/")
 	if(mi.length == 1) {
 		return data[metric]

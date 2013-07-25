@@ -46,12 +46,12 @@ var quadratic = function () {
 }
 
 
-CPM.hotspot = function(data, at) {
+PMV.hotspot = function(data, at) {
 
-	data.shuffle().sort(function(da, db) { return CPM.getv(da, at.sort) - CPM.getv(db, at.sort) } )
+	data.shuffle().sort(function(da, db) { return PMV.getv(da, at.sort) - PMV.getv(db, at.sort) } )
   
-	var wmax = d3.max(data, function(d) { return CPM.getv(d, at.width) });
-	var hmax = d3.max(data, function(d) { return CPM.getv(d, at.height) });
+	var wmax = d3.max(data, function(d) { return PMV.getv(d, at.width) });
+	var hmax = d3.max(data, function(d) { return PMV.getv(d, at.height) });
 	
 	if(at.width.match("^NO") && at.height.match("^NO")) {
 		// magic proportional mode: if both are "number of" they'll get the same scale
@@ -67,12 +67,12 @@ CPM.hotspot = function(data, at) {
     .rangeRound([4, 40]);
   
 	var fscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
+    .domain([0, d3.max(data, function(d) { return PMV.getv(d, at.shade) })])
     .range([100, 0]);
 
 	var layout = quadratic()
-		.width(function(d) { return wscale(CPM.getv(d, at.width)) })
-		.height(function(d) { return hscale(CPM.getv(d, at.height)) });
+		.width(function(d) { return wscale(PMV.getv(d, at.width)) })
+		.height(function(d) { return hscale(PMV.getv(d, at.height)) });
 		 
 	var items = layout(data);
 	
@@ -87,10 +87,10 @@ CPM.hotspot = function(data, at) {
     .enter().append("rect")
     .attr("x", function(d) { return d.x })
     .attr("y", function(d) { return d.y })
-    .attr("width", function(d) { return wscale(CPM.getv(d.item, at.width)) })
-    .attr("height", function(d) { return hscale(CPM.getv(d.item, at.height)) })
+    .attr("width", function(d) { return wscale(PMV.getv(d.item, at.width)) })
+    .attr("height", function(d) { return hscale(PMV.getv(d.item, at.height)) })
 		.attr("shape-rendering", "crispEdges")
-    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d.item, at.shade)) + "%)" })
+    .style("fill", function(d) { return "hsl(200, 80%, " + fscale(PMV.getv(d.item, at.shade)) + "%)" })
 		.call(tooltip(function(d) { return d.item }));
 }
 

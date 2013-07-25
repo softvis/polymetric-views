@@ -1,8 +1,8 @@
 
-CPM.tree = function(data, at) {
+PMV.tree = function(data, at) {
 
-	var wmax = d3.max(data, function(d) { return CPM.getv(d, at.width) });
-	var hmax = d3.max(data, function(d) { return CPM.getv(d, at.height) });
+	var wmax = d3.max(data, function(d) { return PMV.getv(d, at.width) });
+	var hmax = d3.max(data, function(d) { return PMV.getv(d, at.height) });
 	
 	if(at.width.match("^NO") && at.height.match("^NO")) {
 		// magic proportional mode: if both are "number of" they'll get the same scale
@@ -18,7 +18,7 @@ CPM.tree = function(data, at) {
     .rangeRound([4, 40]);
   
 	var fscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
+    .domain([0, d3.max(data, function(d) { return PMV.getv(d, at.shade) })])
     .range([100, 0]);
 
 	var layout = d3.layout.tree()
@@ -52,7 +52,7 @@ CPM.tree = function(data, at) {
 		.attr("width", 10)
 		.attr("height", 10)
 		.attr("shape-rendering", "crispEdges")
-		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)" })
+		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(PMV.getv(d, at.shade)) + "%)" })
 		.call(tooltip());
   
 }

@@ -14,20 +14,21 @@
 		<script src="barchart.js"></script>
 	</head>
 	<body>
-		<h1>Class Polymetrics</h1>
+		<h1>Polymetric Views</h1>
+		<p>Files must be in MSE format. For more information see the project's <a href="https://github.com/softvis/polymetric-views">repository</a>.
 
 		<form action="#" method="get">
-			<input type="file" id="data-file" name="files[]">
+			<input type="file" id="data-file" name="files[]"><br>
 			<hr>
 			<!-- rest of form will be added programmatically -->
 		</form>
 
 		<script>
 
-CPM.dimensions = ['order', 'x-pos', 'y-pos', 'width', 'height', 'shading'];
-CPM.metrics = ['LOC', 'NOM', 'WMC', 'LOC/NOM', 'WMC/LOC', 'CBO', 'NOA', 'NOPUBM'];
+PMV.dimensions = ['order', 'x-pos', 'y-pos', 'width', 'height', 'shading'];
+PMV.metrics = ['LOC', 'NOM', 'WMC', 'LOC/NOM', 'WMC/LOC', 'CBO', 'NOA', 'NOPUBM'];
 
-CPM.layouts = [
+PMV.layouts = [
 	{ name: 'hotspot', title: 'Hotspot Diagram', dimensions: ['order', 'width', 'height', 'shading'] },
 	{ name: 'scatterplot', title: 'Scatter Plot', dimensions: ['x-pos', 'y-pos', 'width', 'height', 'shading'] },
 	{ name: 'treemap', title: 'Tree Map', dimensions: ['order', 'shading'] },
@@ -42,14 +43,14 @@ function buildForm() {
 
 
 	form.append($('<select>', { id: ('layout'), onclick: 'redraw()'}));
-	$(CPM.layouts).each(function(li, l) {
+	$(PMV.layouts).each(function(li, l) {
 		$('#layout').append($('<option>', { value: l.name }).text(l.title));
 	})
 
-	$(CPM.dimensions).each(function(di, d) {
+	$(PMV.dimensions).each(function(di, d) {
 		form.append($('<span>', { class: 'formlabel'}).text(d+":"));
 		form.append($('<select>', { id: ('sel-'+d), onclick: 'redraw()'}));
-		$(CPM.metrics).each(function(mi, m) {
+		$(PMV.metrics).each(function(mi, m) {
 			$('#sel-'+d).append($('<option>', { value: m }).text(m));
 		});
 	});
@@ -62,7 +63,7 @@ function redraw(error, newData) {
 		data = MSE.parse(newData);
 	}
 	var layout = $("#layout").find(":selected").attr("value");
-	var dimensions = $.grep(CPM.layouts, function(l) { return l.name === layout })[0].dimensions;
+	var dimensions = $.grep(PMV.layouts, function(l) { return l.name === layout })[0].dimensions;
 	$('select[id|="sel"]').each(function(idx, el) {
 		if(dimensions.indexOf($(el).attr('id').substr(4)) >= 0) {
 			$(el).removeAttr('disabled');
@@ -72,7 +73,7 @@ function redraw(error, newData) {
 	})
 	switch(layout) {
 	case "hotspot":
-		CPM.hotspot(data, {
+		PMV.hotspot(data, {
 			sort: $('#sel-order').find(":selected").text(),
 			width: $('#sel-width').find(":selected").text(),
 			height: $('#sel-height').find(":selected").text(),
@@ -80,7 +81,7 @@ function redraw(error, newData) {
 		});
 		break;
 	case "scatterplot":
-		CPM.scatterplot(data, {
+		PMV.scatterplot(data, {
 			xpos: $("#sel-x-pos").find(":selected").text(),
 			ypos: $("#sel-y-pos").find(":selected").text(),
 			width: $('#sel-width').find(":selected").text(),
@@ -89,27 +90,27 @@ function redraw(error, newData) {
 		});
 		break;
 	case "tree":
-		CPM.tree(data, {
+		PMV.tree(data, {
 			width: $('#sel-width').find(":selected").text(),
 			height: $('#sel-height').find(":selected").text(),
 			shade: $("#sel-shading").find(":selected").text(),
 		});
 		break;
 	case "treemap":
-		CPM.treemap(data, {
+		PMV.treemap(data, {
 			order: $('#sel-order').find(":selected").text(),
 			shade: $("#sel-shading").find(":selected").text(),
 		});
 		break;
 	case "sunburst":
-		CPM.sunburst(data, {
+		PMV.sunburst(data, {
 			order: $('#sel-order').find(":selected").text(),
 			width: $("#sel-width").find(":selected").text(),
 			shade: $("#sel-shading").find(":selected").text(),
 		});
 		break;
 	case "barchart":
-		CPM.barchart(data, {
+		PMV.barchart(data, {
 			sort: $("#sel-order").find(":selected").text(),
 			height: $("#sel-height").find(":selected").text(),
 			shade: $("#sel-shading").find(":selected").text(),

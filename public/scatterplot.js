@@ -1,5 +1,5 @@
 
-CPM.scatterplot = function(data, at) {
+PMV.scatterplot = function(data, at) {
 
 	var CHEIGHT = 700;
 	var CWIDTH = 700;
@@ -14,15 +14,15 @@ CPM.scatterplot = function(data, at) {
 		.attr("height", CHEIGHT);
 		
 	var xscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.xpos) })])
+		.domain([0, d3.max(data, function(d) { return PMV.getv(d, at.xpos) })])
 		.rangeRound([LEFTSPACE, CWIDTH - MAXWH])
 		
 	var yscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.ypos) })])
+		.domain([0, d3.max(data, function(d) { return PMV.getv(d, at.ypos) })])
 		.rangeRound([TOPSPACE, CHEIGHT - MAXWH]);
 
-	var wmax = d3.max(data, function(d) { return CPM.getv(d, at.width) });
-	var hmax = d3.max(data, function(d) { return CPM.getv(d, at.height) });
+	var wmax = d3.max(data, function(d) { return PMV.getv(d, at.width) });
+	var hmax = d3.max(data, function(d) { return PMV.getv(d, at.height) });
 
 	if(at.width.match("^NO") && at.height.match("^NO")) {
 		// magic proportional mode: if both are "number of" they'll get the same scale
@@ -38,18 +38,18 @@ CPM.scatterplot = function(data, at) {
     .rangeRound([4, MAXWH]);
 
 	var fscale = d3.scale.linear()
-		.domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
+		.domain([0, d3.max(data, function(d) { return PMV.getv(d, at.shade) })])
 		.range([100, 0]);
 		
 	chart.selectAll("rect")
 		.data(data)
 		.enter().append("rect")
-		.attr("x", function(d) { return xscale(CPM.getv(d, at.xpos)) })
-		.attr("y", function(d) { return yscale(CPM.getv(d, at.ypos)) })
-		.attr("width", function(d) { return wscale(CPM.getv(d, at.width)) })
-		.attr("height", function(d) { return hscale(CPM.getv(d, at.height)) })
+		.attr("x", function(d) { return xscale(PMV.getv(d, at.xpos)) })
+		.attr("y", function(d) { return yscale(PMV.getv(d, at.ypos)) })
+		.attr("width", function(d) { return wscale(PMV.getv(d, at.width)) })
+		.attr("height", function(d) { return hscale(PMV.getv(d, at.height)) })
 		.attr("shape-rendering", "crispEdges")
-		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)" })
+		.style("fill", function(d) { return "hsl(200, 80%, " + fscale(PMV.getv(d, at.shade)) + "%)" })
 		.call(tooltip());
 				
 }

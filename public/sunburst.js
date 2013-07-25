@@ -1,14 +1,14 @@
 
-CPM.sunburst = function(data, at) {
+PMV.sunburst = function(data, at) {
 
 	var CWIDTH = 800;
 	var CHEIGHT = CWIDTH;
 	var RADIUS = CWIDTH / 2;
 
-	var roots = CPM.findRoots(data);
+	var roots = PMV.findRoots(data);
 	var root = (roots.length == 1) ? roots[0] : { name: "", children: roots };
 	if (!("NOC" in root)) {
-		CPM.calcNOC(root);
+		PMV.calcNOC(root);
 	}
 
 	$.each(data, function(idx, cls) {
@@ -16,7 +16,7 @@ CPM.sunburst = function(data, at) {
 	});
 
 	var fscale = d3.scale.linear()
-    .domain([0, d3.max(data, function(d) { return CPM.getv(d, at.shade) })])
+    .domain([0, d3.max(data, function(d) { return PMV.getv(d, at.shade) })])
     .range([80, 20]);
 
 	var fscale2 = d3.scale.linear()
@@ -28,8 +28,8 @@ CPM.sunburst = function(data, at) {
 		.padding(3)
 		.mode("squarify")
 		.round(true)
-		.sort(function(da, db) { return CPM.getv(da, at.order) - CPM.getv(db, at.order) })
-		.value(function(d) { return CPM.getv(d, at.order) })
+		.sort(function(da, db) { return PMV.getv(da, at.order) - PMV.getv(db, at.order) })
+		.value(function(d) { return PMV.getv(d, at.order) })
 		.children(function(d) { return d.items; });
 	
 	var nodes = layout.nodes(root);
@@ -46,8 +46,8 @@ CPM.sunburst = function(data, at) {
 	var partition = d3.layout.partition()
 		.sort(null)
 		.size([2 * Math.PI, RADIUS * RADIUS])
-		.sort(function(da, db) { return CPM.getv(da, at.order) - CPM.getv(db, at.order) })
-		.value(function(d) { return CPM.getv(d, at.width); })
+		.sort(function(da, db) { return PMV.getv(da, at.order) - PMV.getv(db, at.order) })
+		.value(function(d) { return PMV.getv(d, at.width); })
 		.children(function(d) { return d.items; });
 
 	var arc = d3.svg.arc()
@@ -64,7 +64,7 @@ CPM.sunburst = function(data, at) {
 		.style("stroke", "white")
 		.style("fill", function(d) { 
 			switch(d.type) {
-			case "Class": return "hsl(200, 80%, " + fscale(CPM.getv(d, at.shade)) + "%)";
+			case "Class": return "hsl(200, 80%, " + fscale(PMV.getv(d, at.shade)) + "%)";
 			case "Package": return "hsl(200, 0%, " + fscale2(d.NOC) + "%)";
 			default: return "white";
 			}
