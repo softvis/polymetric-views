@@ -1,5 +1,14 @@
 # Polymetric Views
 
+## Online version
+
+If you just want to have a look, a recent version of Polymetric Views is hosted <a href="http://softvis.github.io/polymetric-views/public/polymetrics.html">here</a>. Simply open the page and once the demo data has loaded you can switch between layouts and mappings.
+
+The demo data was created from a recent snapshot of the <a href="https://github.com/SpringSource/spring-framework/tree/master/spring-core">source of spring-core</a>, which is part of the <a href="http://www.springsource.org/spring-framework">Spring Framework</a>. The data file is about 5.7MB large, which explains the load time.
+
+You can also use this online version to visualise your own projects. Simply load the MSE file with your metrics into the web page. (See section on inFamix below for details on how to create the MSE file.) Note that all the processing happens in your browser on your computer; no data is uploaded to a server.
+
+
 ## Getting the metrics data with inFamix
 
 To get the metrics for a Java, C, or C++ project use [inFamix](http://www.intooitus.com/products/infamix). On Linux simply call inFamix like this
@@ -21,7 +30,26 @@ Open the file **public/polymetrics.html** in a browser. If a file named **data.m
 
 Note that depending on your browser and computer and the size of the MSE file it can take 10 seconds or more before the diagram is rendered. Switching between layouts and metrics mappings should be very quick.
 
-Supported browsers: Firefox, WebKit/Blink-based browsers (e.g. Safari, Chrome), "modern" Internet Explorer (i.e. Internet Explore 9 and above). Other browsers may or may not work.
+
+## Available metrics
+
+The following metrics are currently available at the class level:
+
+* **LOC** (Lines of Code): the sum of the lines of code of all methods in the class
+* **NOA** (Number of Attributes): the number of attributes (instance variables/fields/members) of the class
+* **NOM** (Number of Methods): the number of methods in the class
+* **NOPUBM** (Number of Public Methods): the number of methods in the class that are public
+* **WMC** (Weighted Method Count): the sum of the weight of all methods in the class. We are using the method's <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity">Cyclomatic Complexity</a> as its weight. This makes WMC the sum of the complexity of all methods in the class.
+* **CBO** (Coupling between Objects): the number of other types and classes the class is coupled to. This metric was proposed by Chidamber and Kemerer, and is described well in this [brief intro]("http://manuel-pichler.de/archives/97-A-brief-introduction-to-the-Coupling-Between-Objects-metric.html).
+
+The following ratios are also available at the class level:
+
+* **LOC/NOM**: The lines of code over the number of methods, i.e. the average method length
+* **WMC/LOC**: The total complexity over the number of lines of code, i.e. the average complexity per line of code
+
+The following metric is available at the package/namespace level:
+
+* **NOC** (Number of Classes): the number of classes in the package/namespace. This includes classes that are in child packages/namespaces.
 
 
 ## Implementation Notes
