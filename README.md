@@ -30,6 +30,8 @@ Open the file **public/polymetrics.html** in a browser. If a file named **data.m
 
 Note that depending on your browser and computer and the size of the MSE file it can take 10 seconds or more before the diagram is rendered. Switching between layouts and metrics mappings should be very quick.
 
+Supported browsers: Firefox, WebKit/Blink-based browsers (e.g. Safari, Chrome), "modern" Internet Explorer (i.e. Internet Explore 9 and above). Other browsers may or may not work. Internet Explorer 8 and below definitely do not work.
+
 
 ## Available metrics
 
