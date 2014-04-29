@@ -12,7 +12,7 @@ PMV.treemap = function(data, at) {
 			roots.push(p);
 		}
 	});
-	var root = (roots.length == 1) ? roots[0] : { name: "", children: roots };
+	var root = (roots.length == 1) ? roots[0] : { name: "", items: roots };
 
 	$.each(data, function(idx, cls) {
 		cls.children = [];

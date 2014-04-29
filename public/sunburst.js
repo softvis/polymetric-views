@@ -6,7 +6,7 @@ PMV.sunburst = function(data, at) {
 	var RADIUS = CWIDTH / 2;
 
 	var roots = PMV.findRoots(data);
-	var root = (roots.length == 1) ? roots[0] : { name: "", children: roots };
+	var root = (roots.length == 1) ? roots[0] : { name: "", items: roots };
 	if (!("NOC" in root)) {
 		PMV.calcNOC(root);
 	}
